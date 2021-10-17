@@ -1,0 +1,155 @@
+---
+title: "ASSIGNMENT 5: Week 7"
+author: "Madeleine Sharp"
+date: '2020-10-15'
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
+
+## Complete assignment05
+
+> Completed within the assignment05 R Studio file and uploaded to the Blackboard submission portal.
+
+## Student Survey
+
+> As a data science intern with newly learned knowledge in skills in statistical correlation and R programming, you will analyze the results of a survey recently given to college students. You learn that the research question being investigated is: “Is there a significant relationship between the amount of time spent reading and the time spent watching television?” You are also interested if there are other significant relationships that can be discovered. The survey data is located in this StudentSurvey.csv file. 
+
+#### i. Use R to calculate the covariance of the Survey variables and provide an explanation of why you would use this calculation and what the results indicate.
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+## Set the working directory to the root of your DSC 520 directory
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/dsc520")
+
+## Load the `data/r4ds/heights.csv` to
+studentsurvey_df <- read.csv("data/student-survey.csv")
+
+## Use R to calculate the covariance of the Survey variables.
+cov(studentsurvey_df[, c("TimeReading", "TimeTV", "Happiness", "Gender")])
+```
+> Covariance as a statistical measure is largely used to measure the joint variability between two variables (usually two random variables). One might use covariance to assess or understand the relationship between two variables, specifically to assess the linear direction of said relationship (versus direction and strength – which is what correlation is used for). In other words, we use covariance to assess how two variables may covary (recalling also that the variance of a single variable indicates the average amount that the data vary from the mean). It is important to note that the covariance between a variable and itself (e.g. TimeTV and TimeTV) is merely just the variance of that random variable.
+
+* The covariance between TimeReading and TimeTV is negative 20.36  repeating (-20.36363636), which indicates that these variables are negatively related.
+* The covariance between TimeReading and Happiness is negative 10.35 (-10.35009091), which indicates that these variables are negatively related.
+* The covariance between TimeReading and Gender is negative 0.081 repeating (-0.08181818), which indicates a negative relationship between these two variables.
+* The covariance between TimeTV and Happiness is 114.38 (114.37727273) which indicates a positive relationship between these variables.
+* The covariance between TimeTV and Gender is 0.045 (0.04545455) indicating a positively related pair of variables.
+* The covariance between Happiness and Gender is 1.12 (1.11663636) indicating a positive relationship between these variables.
+
+> It is important to note that a negative relationship between two variables means that as one variable value goes up, the other goes down. Positive relationships indicate that the variable values move in the same direction - so as one goes up, so does the other (and as one goes down, so does the other).
+
+#### ii. Examine the Survey data variables. What measurement is being used for the variables? Explain what effect changing the measurement being used for the variables would have on the covariance calculation. Would this be a problem? Explain and provide a better alternative if needed.
+
+> The measurement that is being utilized for the variables appears to be:
+
+* TimeReading: This variable is being measured in terms of hours (continuous).
+* TimeTV: This variable is being measured in terms of minutes (continuous).
+* Happiness: This variable is being measured in terms of a score (likely interval/ratio) on a happiness test/scale (continuous).
+* Gender: This variable is being measured categorically for two genders.
+
+> As we can see, each of the variables are not measured in the same way/on the same scale. If we converted all variable values to align/match measurement-wise, it may not necessarily make much of a difference - especially if those values remain proportionate to one another. For example, the values are all relative - in TimeTV, even if we elect to change 90 minutes to be 1.5 hours, that amount is still greater than 75 minutes (1.25 hours). So, while the raw values (irrespective of their unit/measurement) are smaller in terms of hours than they are in terms of minutes, it is still measured proportionately so (relative to one another and the values of other variables).
+
+#### iii. Choose the type of correlation test to perform, explain why you chose this test, and make a prediction if the test yields a positive or negative correlation?
+
+> The correlation test I would choose to perform on the Student Survey dataset would be either the Spearman correlation test (Spearman’s rho) or the Kendall correlation test (Kendall’s tau). Both tests can be utilized for non-parametric data (does not rely on normality or specific distributions), and for both continuous and ordinal variables (both of which exist within the Student Survey dataset). 
+
+> Spearman’s rho usually has larger values than Kendall’s tau and its calculations are based on deviations. This test is also more sensitive to error and discrepancies in data. Kendall’s tau usually has smaller values than Spearman’s rho with its calculation based upon concordant and discordant pairs. This test is insensitive to error and its p-values are more accurate with smaller sample sizes. Given what we know about these tests, I can see benefits to running both on this specific dataset.
+
+> Prior to making my test selections, I ran some basic histograms to assess the normality/distributions of the data. From the below, you can see that the data is not normally distributed, which means Pearson’s correlation test would not apply here (Pearson’s correlation operates off four assumptions, one of those being normally distributed data). 
+
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+library(ggplot2)
+theme_set(theme_minimal())
+options(scipen = 999)
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/dsc520")
+hist(studentsurvey_df$TimeReading)
+hist(studentsurvey_df$TimeTV)
+hist(studentsurvey_df$Happiness)
+hist(studentsurvey_df$Gender)
+```
+
+> My predictions for the outcomes of running the correlational tests include:
+
+* A strong, negative correlation between the variables of TimeReading and TimeTV.
+* A strong, positive correlation between the variables of TimeReading and Happiness. 
+* A strong, negative correlation between the variables of TimeTV and Happiness.
+* No true relationship/correlation between the variables of TimeReading, TimeTV, and Gender (or at least not a very strong relationship).
+
+#### iv.	Perform a correlation analysis of: 
+
+1. All variables:
+
+> Please note: The first correlation matrix is for Spearman, the second is for Kendall.
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/dsc520")
+cor(studentsurvey_df, use = "complete.obs", method = "spearman")
+cor(studentsurvey_df, use = "complete.obs", method = "kendall")
+```
+
+2.	A single correlation between two/a pair of the variables:
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/dsc520")
+cor.test(studentsurvey_df$TimeReading, studentsurvey_df$Happiness, use = "complete.obs", method = "spearman")
+```
+
+> I completed a Spearman's correlation test for the variables of TimeReading and Happiness. From this test, we can see that the correlation coefficient is -0.41 (moderately strong, negative correlation) with a p-value of 0.21, which is greater than 0.05 thereby indicating that our results are not statistically significant.
+
+3. Repeat your correlation test in step 2 but set the confidence interval at 99%
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/dsc520")
+cor.test(studentsurvey_df$TimeReading, studentsurvey_df$Happiness, method = "spearman", exact = FALSE, conf.level = 0.99)
+```
+
+> Upon running this test at the 99% confidence interval, we can see that the results are the same.
+
+4.	Describe what the calculations in the correlation matrix suggest about the relationship between the variables. Be specific with your explanation.
+
+> Based upon the correlation matrices, we can infer the following from both tests (Spearman and Kendall) - even though minor differences in the statistical outputs exist. Please note, all values below are rounded to the second decimal place.
+
+* The relationship between TimeReading and TimeTV is a strong, negative relationship (values = -0.91 and -0.80, respectively).
+* The relationship between TimeReading and Happiness is also a negative relationship, but is not very strong (values = -0.41 and -0.29, respectively). 
+* The relationship between TimeReading and Gender is a very weak, negative relationship (values = -0.09 and -0.08, respectively).
+* The relationship between TimeTV and Happiness is a positive and moderately strong one (values = 0.57 and 0.46, respectively).
+* The relationship between TimeTV and Gender is a very weak, negative one (values = -0.03 and -0.03, respectively).
+* The relationship between Happiness and Gender is a positive, weak correlation (values = 0.12 and 0.10, respectively).
+
+> Overall, these statistical findings tell us that strong relationships (either positive or negative) exist bewteen the variables of TimeReading & TimeTV and TimeTV & Happiness (albeit, moderately so).
+
+#### v.	Calculate the correlation coefficient and the coefficient of determination, describe what you conclude about the results.
+
+> I have already calculated the correlation coefficient for all variables earlier in this assignment (in step IV.1 above). 
+
+> For this task, I calculated the correlation coefficient for the variables of TimeReading and TimeTV (I chose these based upon the next question, vi, below). I decided to use Spearman’s correlation for these two variables (same as before). I calculated the coefficient of determination for all variables, since that has not been done yet. 
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/dsc520")
+cor(studentsurvey_df$TimeReading, studentsurvey_df$TimeTV, use = "complete.obs", method = "spearman")
+studentsurvey1 <- lm(TimeReading ~ TimeTV + Happiness + Gender, data = studentsurvey_df)
+summary(studentsurvey1)
+coefficients(studentsurvey1)
+```
+
+> From these results, we can conclude that the relationship between TimeReading and TimeTV is a strong, negative one (-0.91). From the coefficient of determination results, we can conclude that:
+
+* The R-squared value of 0.82 indicates an 82% goodness-of-fit to the linear model.
+* The Adjusted R-squared value of 0.74 indicated a 74% goodness-of-fit to the model.
+* Overall, these statistics indicate to us that the coefficient of determination signifies a strong fit to the linear model, with the p-value being less than .05 (p-value = 0.005), thereby indicating statistical significance.
+
+#### vi.	Based on your analysis can you say that watching more TV caused students to read less? Explain.
+
+> First and foremost, because we are looking at correlation (and covariance), we cannot say that any one variable caused another. However, we can assess the strength and direction of the relationship between the variables of TimeReading and TimeTV. Based upon my analysis, the results indicate that the relationship between TimeReading and TimeTV is a strong, negative relationship (values = -0.91 and -0.80, respectively) which means that as students read more or watched more TV (one variable value going up), less time was spent watching TV or reading (respectively). In short, one could say that watching more TV is inversely related to the amount of time a student reads (as time spent watching TV increases, time spent reading decreases).
+
+#### vii.	Pick three variables and perform a partial correlation, documenting which variable you are “controlling”. Explain how this changes your interpretation and explanation of the results.
+```{r echo = FALSE, warning = FALSE, comment = NA}
+library(ggm)
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/dsc520")
+pc <- pcor(c("TimeReading", "TimeTV", "Happiness"), var(studentsurvey_df))
+pc
+pcor.test(pc, 1, 11)
+```
+> The three variables I chose for a partial correlation include TimeReading, TimeTV, and Happiness. The variable I chose to control was Happiness. By controlling a specific variable, this may change the interpretation or explanation of results by taking into account another variable that may have an impact on the relationship between two variables (a confounding variable). In this specific example, we might like to see how the relationship between TimeReading and TimeTV is different if we control for Happiness. Based upon the outcome/results, we can see that the partial correlation coefficient in this scenario is -0.87. From the previous correlation task, the relationship between TimeReading and TimeTV had values of -0.91 and -0.80, respectively. This indicates to us that conrolling the variable of Happiness does not have much of an effect/impact on the relationship between TimeReading and TimeTV. Additionally, the p-value is 0.001, which is less than 0.05, indicating that our results are statistically significant.
