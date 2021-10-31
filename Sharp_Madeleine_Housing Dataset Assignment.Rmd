@@ -1,0 +1,236 @@
+---
+title: "Housing Dataset Assignment: Week 9"
+author: "Madeleine Sharp"
+date: '2020-10-26'
+output:
+  word_document: default
+  html_document: default
+---
+
+## Complete assignment06 and complete assignment07
+
+> Completed within the assignment06 and assignment07 R Studio files and uploaded to the Blackboard submission portal.
+
+## Housing Data
+
+> a.	Work individually on this assignment. You are encouraged to collaborate on ideas and strategies pertinent to this assignment. Data for this assignment is focused on real estate transactions recorded from 1964 to 2016 and can be found in Housing.xlsx. Using your skills in statistical correlation, multiple regression, and R programming, you are interested in the following variables: Sale Price and several other possible predictors. 
+
+#### i.	If you worked with the Housing dataset in previous week – you are in luck, you likely have already found any issues in the dataset and made the necessary transformations. If not, you will want to take some time looking at the data with all your new skills and identifying if you have any clean up that needs to happen.
+
+> b.	Complete the following: 
+
+#### i.	Explain any transformations or modifications you made to the dataset.
+
+```{r include = FALSE, warning = FALSE}
+## Set the working directory to the root of your DSC 520 directory
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/dsc520")
+
+## Load the `data/week-6-housing.csv` to
+housedata_df <- read.csv("data/week-6-housing.csv", na.strings = c("", "NA"))
+names(housedata_df)[1] = "sale_date"
+names(housedata_df)[2] = "sale_price"
+names(housedata_df)[6] = "site_type"
+names(housedata_df)[9] = "cty_name"
+names(housedata_df)[10] = "postal_ctyn"
+dplyr::rename_with(housedata_df, ~ tolower(gsub(".", "_", .x, fixed = TRUE)))
+housedata_df
+```
+```{r echo = FALSE, warning = FALSE, comment = NA}
+head(housedata_df)
+```
+
+> The dataset has quite a few missing values for the variables of sale_warning and cityname. For any of these missing values, I have included an R code command to replace/treat those missing values as NA. I have decided against removing those values and their adjacent rows (the remainder of the specific housing transaction for that respective entry) because the remainder of the dataset and its variables are complete with data points. Additionally, I will mainly utilize the other variables that have complete data points for my analyses. In those instances in which I may elect to utilize the sale_warning and cityname variables, I will be sure to control for those variables by removing the blank, or NA, data points.
+
+> Additionally, I have transformed the naming schema of the variables to be consistent across the board. More specifically, each variable name that includes two or more words has those words separated by hyphens. For example, instead of Sale Price, I have transformed this to be sale_price.
+
+> Lastly, in the next step, I transform the sale_date variable into a new variable and add it to the dataframe to be sale_year. I plan to use this variable in my analyses, as I believe that the year in which a home is sold can impact its pricing (due to the state of the economy in said year). However, the current state of sale_price in the dataset is both treated as a string character and has too many meaningless instances for analysis (month, day, year). I believe it will be most meaningful to look at the sales by year versus by the day, so I have transformed this variable to reflect only the year in my new sale_year variable. I have also ensured that my new variable is read as numeric, and not a string character variable.
+
+#### ii.	Create two variables; one that will contain the variables Sale Price and Square Foot of Lot (same variables used from previous assignment on simple regression) and one that will contain Sale Price and several additional predictors of your choice. Explain the basis for your additional predictor selections.
+
+```{r include = FALSE, warning = FALSE}
+year <- format(as.Date(housedata_df$sale_date, format="%m/%d/%Y"),"%Y")
+sale_year <- as.numeric(year)
+sale_lotsize <- lm(sale_price ~ sq_ft_lot, data = housedata_df)
+sale_lotsize
+sale_multi <- lm(sale_price ~  sq_ft_lot + year_built + square_feet_total_living + sale_year, data = housedata_df)
+sale_multi
+```
+
+> Completed! The first variable includes the linear model for a simple regression of sale_price and sq_ft_lot. The second variable includes the linear model for a multiple regression utilizing the dataset variables of sale_price, sale_date, year_built, and square_feet_total_living. The reasoning behind why I chose this assortment of variables is because of my knowledge regarding what may impact the pricing of a home. In my line of work, I deal quite a bit with real estate information, and in my experience and observations:
+
+* The square footage of a lot (sq_ft_lot) can impact the pricing of a home, as generally more square footage indicates a higher price - however, this is largely because prices are set by dollar per square foot, so when that dollar amount is multiplied against the total square footage, the more square footage, the greater the cost.
+* The year in which a home is built (year_built) can impact the pricing of a home - either because of style (whether outdated/out-of-style or possessing additional rare charm due to age) or because of structural or code issues (the older the home, more issues may exist/need to be dealt with).
+* The total living space of a home (square_feet_total_living) can impact the price of a home, as often times home prices are set by a dollar per square foot of livable space. 
+* The year in which a home is sold (sale_date) can impact home pricing. For example, our current economic climate during this year and the past year has impacted the increase in home prices. In my analyses, I used a tranformed version of this variable - sale_year.
+* As a side note, one additional variable that I could have used that I did not add is location. Location can most certainly impact the sale price of a home, but I did not want to include too many variables and wanted to pick some others that I felt may be more impactful.
+
+#### iii.	Execute a summary() function on two variables defined in the previous step to compare the model results. What are the R2 and Adjusted R2 statistics? Explain what these results tell you about the overall model. Did the inclusion of the additional predictors help explain any large variations found in Sale Price?
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+summary(sale_lotsize)
+summary(sale_multi)
+```
+
+> Completed! The R-squared and Adjusted R-squared statistics for the two variables are:
+
+* sale_lotsize: R-squared = 0.01435,	Adjusted R-squared =  0.01428 
+* sale_multi: R-squared:  0.2219,	Adjusted R-squared:  0.2216 
+
+> The results indicate the following:
+
+* Overall, sale_lotsize is of about a 1.4% goodness-of-fit to the model for both the R-squared and the Adjusted R-squared.
+* Overall model for sale_multi is of about a 22.2% goodness-of-fit to the model for both the R-squared and the Adjusted R-squared.
+* This indicates to us that the inclusion of the additional variables strengthens the linear model, and that the variables added could be considered useful variables. However, a 22.2% goodness-of-fit, while stronger than 1.4%, is still not very strong overall.
+ 
+#### iv.	Considering the parameters of the multiple regression model you have created, what are the standardized betas for each parameter and what do the values indicate?
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+QuantPsyc::lm.beta(sale_lotsize)
+QuantPsyc::lm.beta(sale_multi)
+```
+
+> Considering the parameters of the multiple regression model that I have created, the standardized betas for each parameter are:
+
+* sale_lotsize: sq_ft_lot = 0.12
+* sale_multi: sq_foot_lot = 0.04, year_built = 0.12, square_feet_total_living = 0.41, sale_year = 0.04
+
+> Standardized beta coefficients compare the strength of the effect of each individual independent variable to the dependent variable. The higher the absolute value of the beta coefficient, the stronger the effect. Therefore, the values of these betas can be interpreted as:
+
+* sale_lotsize: sq_ft_lot = 0.12 - not a very strong effect.
+* sale_multi: sq_foot_lot = 0.04 - very weak effect.
+* sale_multi: year_built = 0.12 - not a very strong effect.
+* sale_multi: square_feet_total_living = 0.41 - a moderately strong effect.
+* sale_multi: sale_year = 0.04 - very weak effect.
+
+#### v.	Calculate the confidence intervals for the parameters in your model and explain what the results indicate.
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+new_df <- data.frame(sq_ft_lot = c(1500, 2500, 3500, 4500), year_built = c(1900, 1935, 1970, 2005), 
+                     square_feet_total_living = c(1000, 2000, 3000, 4000), sale_year = c(2008, 2010, 2012, 2014))
+predicted_df <- data.frame(sale_price = predict(sale_multi, newdata = new_df, interval = "confidence"))
+predicted_df
+```
+> Completed! The results of this output indicate:
+
+* The fitted sale price at a sq_ft_lot of 1500 sq. ft., a year_built of 1900, a square_feet_total_living of 1000, and a sale_year of 2008 results in an amount of $110,772.80. The confidence interval of (75,540.55, 146,005.10) signifies the range in which the true population parameter lies at a 95% level of confidence.
+* The same explanation above can be applied for the next 3 instances in which we use our predict() to calculate the confidence levels of these parameters with the additional specific predictor values.
+
+#### vi.	Assess the improvement of the new model compared to your original model (simple regression model) by testing whether this change is significant by performing an analysis of variance.
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+anova(sale_lotsize, sale_multi)
+```
+
+> Completed! The results from the ANOVA (analysis of variance) show that:
+
+* None of our instances indicate statistical significance (no p-values are less than 0.05), therefore, we cannot conclude that the change is significant.
+
+#### vii.	Perform casewise diagnostics to identify outliers and/or influential cases, storing each function's output in a dataframe assigned to a unique variable name.
+
+> Completed! Please see the below summary statistics of influential measures code and plots.
+
+```{r include = TRUE, results = "hide", warning = FALSE}
+sale_lotsize_casewise <- summary(influence.measures(sale_lotsize))
+sale_multi_casewise <- summary(influence.measures(sale_multi))
+```
+```{r echo = FALSE, warning = FALSE}
+plot(sale_lotsize)
+plot(sale_multi)
+```
+
+#### viii.	Calculate the standardized residuals using the appropriate command, specifying those that are +-2, storing the results of large residuals in a variable you create.
+
+```{r include = TRUE, results = "hide", warning = FALSE}
+resstd_lotsize <- rstandard(sale_lotsize)
+resstd_multi <- rstandard(sale_multi)
+combined_resdata_lotsize <- cbind(housedata_df, resstd_lotsize)
+combined_resdata_multi <- cbind(housedata_df, resstd_multi)
+combined_resdata_lotsize[order(-resstd_lotsize),]
+combined_resdata_multi[order(-resstd_multi),]
+largeres_lotsize <- resstd_lotsize > 2 | resstd_lotsize < -2
+largeres_multi <- resstd_multi > 2 | resstd_multi < -2
+```
+
+> Completed! Please see the above code.
+
+#### ix.	Use the appropriate function to show the sum of large residuals.
+
+```{r include = TRUE, warning = FALSE}
+sum(largeres_multi^2)
+```
+
+> Completed! Please see the above code and output. The sum of large residuals for my model with multiple predictor variables (sale_multi) is 334.
+
+#### x.	Which specific variables have large residuals (only cases that evaluate as TRUE)?
+
+> The main variable that has large residuals is the sale_price variable itself.
+
+#### xi.	Investigate further by calculating the leverage, cooks distance, and covariance rations. Comment on all cases that are problematic.
+
+```{r echo = FALSE, warning = FALSE}
+## Calculate leverage
+plot(hatvalues(sale_lotsize), type = "h")
+plot(hatvalues(sale_multi), type = "h")
+## Calculate Cook's Distance
+plot(cooks.distance(sale_lotsize))
+plot(cooks.distance(sale_multi))
+```
+```{r include = TRUE, results = "hide", warning = FALSE}
+## Calculate covariance rations
+covratio(sale_lotsize)
+covratio(sale_multi)
+```
+
+> Completed! Problematic cases include any:
+
+* Outliers within the data
+* Missing values within the data
+
+#### xii.	Perform the necessary calculations to assess the assumption of independence and state if the condition is met or not.
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+car::durbinWatsonTest(sale_lotsize)
+car::durbinWatsonTest(sale_multi)
+```
+
+> Completed! The selected test to be run for assessing the assumption of independence is the Durbin-Watson Test, as this is best and simplest way to check this assumption. Based on the results, because the p-value is less than 0.05, we can interpret that the independence assumption has not been met. Additionally, because the Durbin-Watson values are both approximately midway to 1 (and are less than 2), this means there is a positive autocorrelation between variables.
+
+####  xiii.	Perform the necessary calculations to assess the assumption of no multicollinearity and state if the condition is met or not.
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+car::vif(sale_multi)
+```
+
+> Completed! I did not compute VIF (variance inflation factor) for the sale_lotsize model, as multicollinearity cannot be assesssed with only one predictor variable. I did compute the VIF for the sale_multi model, as that is the model I created with multiple predictor variables. Based on the results, we can conclude that, because each of the VIF values are approximately 1, sale_price is not easily explained by the other variables and thus there is no multicollinearity (so the condition is met and this is no issue with multicollinearity).
+
+#### xiv.	Visually check the assumptions related to the residuals using the plot() and hist() functions. Summarize what each graph is informing you of and if any anomalies are present.
+
+```{r echo = FALSE, warning = FALSE}
+plot(sale_lotsize)
+plot(sale_multi)
+hist(rstudent(sale_lotsize))
+hist(rstudent(sale_multi))
+```
+
+> Completed! Overall, from both models, we can see that in Residual vs. Fitted, there is no pattern in the residual plots. This suggests that we can assume linear relationships between the predictors and the outcome variables. The presence of a pattern may indicate a problem with some aspect of the linear model.
+
+> Next, for the QQ plot, all the points do not fall approximately along the reference line, so we can assume non-normality.
+
+> For the Scale-Location Plot, we do not see a horizontal line with equally spread points. Therefore we cannot assume homogeneity of variance.
+
+> For the Residuals vs. Leverage, we can ascertain that quite a few influential points exist within the dataset.
+
+> The histogram indicates to us that the sale_price data is not normally distributed (it is slightly positively skewed/right skewed).
+
+#### xv.	Overall, is this regression model unbiased? If an unbiased regression model, what does this tell us about the sample vs. the entire population model?
+
+> Overall, the regression model can be considered mostly unbiased given the following:
+
+* Variable Types: All quantitative or categorical.
+* Non-zero Variance: The predictors do have some variation in value.
+* No Perfect Multicollinearity: No perfect linear relationship exists between all of the variables.
+* Predictors Uncorrelated with 'External Variables': External predictor variables do not correlate highly with one another.
+* Homoscedasticity: The variables at each level of the predictors have the same variance.
+* Independent Errors: The residuals for any observations are uncorrelated.
+* Independence: Outcome variable values are independent.
+* Linearity: The mean values are not linear (this would be one area in which the model is biased). 
