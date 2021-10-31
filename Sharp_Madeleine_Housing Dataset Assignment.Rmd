@@ -5,6 +5,7 @@ date: '2020-10-26'
 output:
   word_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ## Complete assignment06 and complete assignment07
