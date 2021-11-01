@@ -1,0 +1,130 @@
+---
+title: "8.3 Final Project Step 1"
+author: "Madeleine Sharp"
+date: '2021-10-26'
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+---
+
+## Introduction
+
+> As the developed world continues to become even more developed, the usage of our planet’s natural resources becomes a critical issue to consider. Not only does development impact environmental resource consumption, but so does population increase – with more inhabitants on planet earth, there are fewer resources per capita. In the United Nations IPCC 2021 report on climate change (IPCC, 2021), a strong call to action was made – primarily citing human influence as one of the primary drivers of environmental decline and thus proposing escalated control of human resource usage and human carbon footprints as an imperative solution. While this report focused specifically on climate change and its influencing factors, I would like to explore the issue of the depletion of natural resources and the decline in those resources across time. Additionally, I believe it is critical to not only consider historical data in this case, but to predict the landscape (no pun intended) of natural resources in the coming years utilizing predictive modeling of the data. Not only is this a crucial issue to explore and to formulate solutions for as it pertains to the earth, but for every living person now and those to come. By utilizing historical data trends regarding the depletion of natural resources, we can forecast for tomorrow, and implement plans and solutions today to mitigate further destruction. 
+
+## Research Questions
+
+1.	Which planetary regions have experienced the greatest decline in natural resources including water, forests, natural materials, wildlife, and natural oil reserves?
+2.	What is the relationship between land use development in developed nations and natural resource decline?
+3.	What main factors or variables influence natural resource decline and in what areas of the world do we see these most?
+4.	For those countries that are developed but have a low loss of natural resources, what potential confounding variables may be at play? For example, are there places that are contributing to high development but are utilizing more sustainable resources to do so?
+5.	What is the relationship between a nation’s wealth and its usage of natural resources?
+
+## Approach
+
+> To address this natural resource problem, I plan to analyze historical data trends for a variety of natural resources areas including, but not limited to:
+
+* Water
+* Forests
+* Materials
+* Wildlife
+* Oil/Petroleum
+
+> Other important topics to analyze data for include:
+
+* Human Population
+* Wealth
+
+> My proposed approach, in addition to analyzing historical and descriptive data regarding natural resource usage, is to propose the utilization of that data to make predictions about future usage via predictive models. This will allow for the assessment of the rate of decline from the past and apply that toward the future, thereby giving a glimpse into what our natural resource picture may look like down the road. This is imperative, because it is important to consider future generations and how they may be impacted by the ways in which resources have been utilized in the past and how they are being utilized today. 
+
+> My project approach will only partially address the problem – I am still a learning data scientist, and only one single person, thus cannot conjure myriad predictive models and solutions on my own. While I will be analyzing the data for historical and descriptive statistics, I will be recommending (and urging!) for the creation and usage of predictive models to obtain real statistical information that inform real solutions.
+
+## Data
+
+> The datasets I have located so far for my project include (may not be limited to these for my end of the term final project submission, or may be swapped out if better data resources are found between now and final submission):
+
+1. Organisation for Economic Co-operation and Development. (2021). Freshwater resources (long term annual average). OECD.Stat. https://stats.oecd.org/viewhtml.aspx?datasetcode=WATER_RESOURCES&lang=en
+* Original Purpose: To track the current state of freshwater resources by country.
+* Date of Collection: Past year’s data is available only.
+* Number of Variables: 13
+* Potential Peculiarities: It appears only the current year of data is available. This will prove problematic for historical analyses across time. A fair share of missing values exists, also.
+2. Organisation for Economic Co-operation and Development. (2021). Water made available for use. OECD.Stat. https://stats.oecd.org/viewhtml.aspx?datasetcode=WATER_USE&lang=en
+* Original Purpose: To assess water availability for a variety of purposes and/or industries.
+* Date of Collection: From 1980 to 2019
+* Number of Variables: 70
+* Potential Peculiarities: Missing values are present. Each variable would need to be downloaded individually to be a usable dataset, which could prove time consuming, however, I likely will not need all 70 variables in my analyses and can select the best aggregate variables or most pertinent ones.
+3. Organisation for Economic Co-operation and Development. (2021). Depletion and growth of forest resources in terms of volume. OECD.Stat. https://stats.oecd.org/viewhtml.aspx?datasetcode=FOREST&lang=en
+* Original Purpose: To assess the usage of forest resources in a variety of countries.
+* Date of Collection: 1990 to 2019
+* Number of Variables: 8
+* Potential Peculiarities: Missing values are present. Each variable would need to be downloaded individually to be a usable dataset.
+4. Organisation for Economic Co-operation and Development. (2021). Material resources. OECD.Stat. https://stats.oecd.org/viewhtml.aspx?datasetcode=MATERIAL_RESOURCES&lang=en
+* Original Purpose: To collect information on various types of material usage in various countries.
+* Date of Collection: 1970 to 2019
+* Number of Variables: 15
+* Potential Peculiarities: Missing values are present. Each variable would need to be downloaded individually to be a usable dataset.
+5. Organisation for Economic Co-operation and Development. (2021). Threatened species. OECD.Stat. https://stats.oecd.org/viewhtml.aspx?datasetcode=WILD_LIFE&lang=en
+* Original Purpose: To record the percentage of threatened species in various countries.
+* Date of Collection: No clear collection date, but the data collected is “as of the most recent.” No range of dates, just cumulative percentages for “current state.”
+* Number of Variables: 
+* Potential Peculiarities: The date is organized by country and by species, so it is not organized by date. This would be difficult to compare against my other datasets for an across time or time series analysis. Some missing values also exist.
+6. U.S. Energy Information Administration. (2021). Consumption: Petroleum and other liquids. EIA. https://www.eia.gov/international/data/world/petroleum-and-other-liquids/annual-refined-petroleum-products-consumption?pd=5&p=0000001001vg0000000000000000000000000000000000g&u=0&f=A&v=mapbubble&a=-&i=none&vo=value&&t=C&g=00000000000000000000000000000000000000000000000001&l=249-ruvvvvvfvtvnvv1vrvvvvfvvvvvvfvvvou20evvvvvvvvvvnvvvs0008&s=94694400000&e=1577836800000
+* Original Purpose: To collect data regarding petroleum and other natural fossil fuel liquid consumption in various countries.
+* Date of Collection: 2016 to 2020
+* Number of Variables: 8
+* Potential Peculiarities: The data can be downloaded as an Excel and also has an API option, which could be useful or perhaps not (will determine once I begin my analyses). More missing values are present in more recent years. Data can only be organized by energy source/activity or country/region.
+7. The World Bank. (2021). Population, total. The World Bank. https://data.worldbank.org/indicator/SP.POP.TOTL
+* Original Purpose: To collect world population data, by country.
+* Date of Collection: 1960 to 2020
+* Number of Variables: 1
+o	Potential Peculiarities: The data is just the total population per year by country, and no missing data appears to exist. However, extracting the data could be tricky, as there does not appear an easy way to obtain it off-the-bat.
+8. The World Bank. (2021). GDP (current US$). The World Bank. https://data.worldbank.org/indicator/NY.GDP.MKTP.CD
+* Original Purpose: To collect world GDP wealth data, by country.
+* Date of Collection: 1960 to 2020
+* Number of Variables: 1
+* Potential Peculiarities: The data is just the total GDP per year by country, and no missing data appears to exist. However, extracting the data could be tricky, as there does not appear an easy way to obtain it off-the-bat.
+
+## Required Packages
+
+> The required R packages to tackle this problem via data analysis include, but are not limited to (in no particular order):
+
+* ggplot2 – For the creation of graphics and plots to view the datasets and analyses visually.
+* tidyverse – A grouping of R packages designed for data science usage for data importing, tiding, and visualizations.
+* dplyr – Used for its essential shortcuts for subsetting, summarizing, rearranging, and joining together datasets. Great for efficient data manipulation.
+*	RSQLite – For reading data from a database.
+*	xlsx – For reading and writing Microsoft Excel files from R and to export any data download spreadsheets from Excel as csvs.
+*	readxl – For reading Excel data files.
+*	car – Useful for data modeling and for its Anova function.
+*	knitr – For report generation.
+*	R Markdown – For reproducible reporting with automated and integrated outputs formatted professionally in one document.
+*	purrr – For a variety of data wrangling purposes and needs.
+*	magrittr – Also useful for a variety of data wrangling purposes.
+*	data.table – Good for data wrangling of large datasets.
+
+## Plot and Table Needs
+
+> The plot and table needs for this project include:
+
+* Plots for looking at usage trends across time will be extremely useful for my research on this specific topic. More specifically, it would be interesting to plot specific data points and then also plot a trend line within that plot indicating the direction we are heading in terms of usage of natural resources (is there an incline or decline from the past to the most recent?).
+*	Specifically for species, a table outlining the most endangered species with their relative percentages of remaining/destroyed by country would be a good way to see those numbers. Additionally, a bar graph or histogram would also be useful for displaying this data.
+*	As I work through my historical and descriptive analyses, additional plot and table needs will become clearer. Data analysis is often a work in progress, and the data or reports I think may be most helpful now may not be, and I may come across others that are more helpful than I initially thought or that had not been considered. 
+
+## Questions for Future Steps
+
+* Do the historical and descriptive analyses paint enough of a picture for where we are headed in terms of natural resource decline? Or do we need predictive modeling and forecasting to solidify more so what that future may be like? What other analyses may we need to compute?
+*	Are there additional variables or measures that have not been considered or included as a part of this research project that may prove useful in future analyses?
+*	What other steps can be taken analysis-wise to ensure ecological validity of outcomes? In other words, how can we ensure that our solutions reach the real-world and can truly be implemented?
+*	Based on this analysis, do the variables in question really impact environmental decline? How do we know?
+*	What else (other environmental factors besides just natural resource usage) may be impacted by these variables and this analysis that was not considered?
+
+## Conclusion
+
+> Overall, natural resource usage is an important issue to be cognizant of especially as we approach the future. In order to tackle the above, and in addition to my current knowledgebase, some other things I may need to know how to do that I do not currently know include:
+
+* Learning to complete a time series analysis test. A time series analysis would prove useful, as it would allow me to understand trends or patterns in the data over time. Since much of what I will be assessing is trends in the usage of natural resources across time, this will be an important test to run. To date, I have not yet run a time series analysis in R.
+
+
+# References
+
+1. IPCC. (2021). AR6 climate change 2021: The physical science basis. IPCC. 
+        https://www.ipcc.ch/report/ar6/wg1/#TS
