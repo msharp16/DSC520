@@ -1,0 +1,114 @@
+---
+title: "Thoracic Surgey Assignment: Week 10"
+author: "Madeleine Sharp"
+date: '2020-11-05'
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
+
+## Thoracic Surgery Binary Dataset
+
+### 1. Fit a Logistic Regression Model to Thoracic Surgery Binary Dataset 
+
+#### a. For this problem, you will be working with the thoracic surgery data set from the University of California Irvine machine learning repository. This dataset contains information on life expectancy in lung cancer patients after surgery. The underlying thoracic surgery data is in ARFF format. This is a text-based format with information on each of the attributes. You can load this data using a package such as foreign or by cutting and pasting the data section into a CSV file.
+
+#### b. Assignment Instructions: 
+
+* i. Fit a binary logistic regression model to the data set that predicts whether or not the patient survived for one year (the Risk1Y variable) after the surgery. Use the glm() function to perform the logistic regression. See Generalized Linear Models for an example. Include a summary using the summary() function in your results.
+
+```{r include = TRUE, warning = FALSE, comment = NA}
+knitr::opts_chunk$set(echo = TRUE)
+## Set the working directory to the root of your DSC 520 directory
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/dsc520")
+
+## Load the `data/ThoracicSurgery.arff` to
+thoracic_data_df <- foreign::read.arff("data/ThoracicSurgery.arff")
+
+## Explore the data set
+library(ggplot2)
+head(thoracic_data_df)
+ggplot(thoracic_data_df, aes(AGE, Risk1Yr)) + geom_point()
+
+## Split the data set
+library(caTools)
+split <- sample.split(thoracic_data_df, SplitRatio = 0.8)
+split
+train <- subset(thoracic_data_df, split == "TRUE")
+test <- subset(thoracic_data_df, split == "FALSE")
+```
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+survival_glm <- glm(Risk1Yr ~ PRE7 + PRE8 + PRE9 + PRE10 + PRE11 + PRE17 + PRE19 + PRE25 + PRE30 + PRE32, data = thoracic_data_df, family= binomial())
+summary(survival_glm)
+
+## Run the test data through the model
+res_test <- predict(survival_glm, test, type = "response")
+res_test 
+
+res_train <- predict(survival_glm, train, type = "response")
+```
+
+> For this linear model, only binary-type variables (as classified on the UCI website where the original data set exists) were utilized in fitting the binary logistic regression model.
+
+* ii. According to the summary, which variables had the greatest effect on the survival rate?
+
+> The variables found to have the greatest effect on the survival rate after one year are PRE9 and PRE17. They are also the most statistically significant according to the summary analysis with p-values of 0.01.
+
+* iii. To compute the accuracy of your model, use the dataset to predict the outcome variable. The percent of correct predictions is the accuracy of your model. What is the accuracy of your model?
+
+```{r include = TRUE, warning = FALSE, comment = NA}
+
+## Add column of probability of Risk1Yr based on model
+thoracic_data_df$predicted_prob <- fitted(survival_glm) 
+head(thoracic_data_df)
+
+## Add column of T/F predictions based on probability scores above .25 (threshold selection)
+thoracic_data_df$prediction_TF <- dplyr::if_else(thoracic_data_df$predicted_prob > .25, TRUE, FALSE)
+head(thoracic_data_df)
+
+## Choose probability threshold and compare model outcome with actual values
+conf_matrix <- table(actual_value = thoracic_data_df$Risk1Yr, Prediction = thoracic_data_df$prediction_TF)
+conf_matrix
+
+## Assess accuracy of the model
+(conf_matrix[[1,1]] + conf_matrix[[2,2]]) / sum(conf_matrix)
+
+## Calculate AUC
+library(pROC)
+auc(test$Risk1Yr, res_test)
+```
+
+> After gaining probabilities based on our model, and choosing a threshold (0.25), we can see that the model is approximately 81% accurate. The calculated AUC (area under the curve) for this model is 0.63.
+
+### 2. Fit a Logistic Regression Model 
+
+#### a. Fit a logistic regression model to the binary-classifier-data.csv dataset
+
+```{r include = TRUE, warning = FALSE, comment = NA}
+## Set the working directory to the root of your DSC 520 directory
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/dsc520")
+binary_class_df <- read.csv('data/binary-classifier-data.csv')
+head(binary_class_df)
+binary_glm <-glm(label ~ x + y, data = binary_class_df, family = binomial())
+```
+
+#### b. The dataset (found in binary-classifier-data.csv) contains three variables; label, x, and y. The label variable is either 0 or 1 and is the output we want to predict using the x and y variables. 
+
+* i. What is the accuracy of the logistic regression classifier?
+
+```{r include = TRUE, warning = FALSE, comment = NA}
+summary(binary_glm)
+binary_class_df$pred_prob <-fitted(binary_glm)
+binary_class_df$pred_label<-dplyr::if_else(binary_class_df$pred_prob >= .50, 1, 0)
+conf_matrix_3 <- table(Actual_Label = binary_class_df$label, Predicted_Label = binary_class_df$pred_label)
+conf_matrix_3
+(conf_matrix_3[[1,1]] + conf_matrix_3[[2,2]]) / sum(conf_matrix_3)
+```
+
+> When assessing for accuracy at a different threshold (the logistic regression classifier), the accuracy was not as strong (went down) when the adjusted threshold was above or below 0.50. This can be interpreted as the best threshold being at 0.50 probability (over would be predicted as labeled 1, under would be 0). The accuracy of the logistic regression classifier for this model is approximately 58% - which is over 50% but not extremely strong goodness-of-fit-wise. It is a moderate goodness-of-fit. Overall, the relationship between the variables may not be very strong, straight, and linear.
+
+* ii Keep this assignment handy, as you will be comparing your results from this week to next week.
+
+> Noted! Will do.
