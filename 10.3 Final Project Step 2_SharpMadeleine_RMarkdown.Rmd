@@ -1,0 +1,345 @@
+---
+title: "10.3 Final Project Step 2"
+author: "Madeleine Sharp"
+date: '2020-11-06'
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
+
+## How to Import and Clean My Data
+
+> The data sets for these projects will be handled in the following manner:
+
+* First, the data must be extracted and imported into R. For some of the data sets I will be able to select variables prior to extraction, some data sets I may do so afterwards.
+
+* I must select which variables are most relevant to my question, or which variables I hypothesize will be best/most meaningful to use in my analyses. In each of the data sets, there are simply too many variables for me to utilize all of them, and doing so would be outside the scope/bounds of this project. Additionally, I will be looking at the data from a more recent time frame - some of my data will go back to 2010, some will only be of the most recent year that the data was collected (some of my data sets do not have anything beyond "the most recent year").
+
+* Once I have selected the key variables to use in my analyses, I will then ensure to clean, transform, format, etc. those variables so that they can be prepared to be used in an analysis.
+
+* Please see the below data set list and accompanying text narratives for an brief synopsis of how data will be handled more specifically for each data set, as well as the variables I plan to use from each data set. 
+
+> Overall, the following steps will be taken for data cleansing and transformation:
+
+* Importing the data/extracting necessary components of the data
+* Formatting/cleaning the data (removing duplicate/irrelevant data, fixing structural issues/errors, filter unwanted outliers if applicable, handle and account for any missing data, validate the data)
+* Manipulating the data
+* Analyzing the data
+
+1. Organisation for Economic Co-operation and Development. (2021). Freshwater resources (long term annual average). OECD.Stat. https://stats.oecd.org/viewhtml.aspx?datasetcode=WATER_RESOURCES&lang=en
+
+* This data set includes data regarding freshwater resources by country - with emphasis on renewable water.
+* This data first needs to be exported to an Excel file in order to extract the data. 
+* On the OECD Stat site, I was able to customize to select and export only those variables for which I am interested in (which was quite helpful)! Once saved as an Excel file (.csv), I am able to import the data within R to be cleaned for use. I am selecting the variables of Total Renewable per Capita (m3/cap) and Total Renewable from this data set.
+* To clean this data, I will ensure the format of the variable nomenclature schema is the same across the board, thereby being easily read and utilized in my analysis.
+
+```{r include = TRUE, warning = FALSE, comment = NA}
+## Set the working directory to the root of your DSC 520 directory
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+
+## Load the data
+water_renew_df <- read.csv("Water Resources.csv", na.strings = c("..", "NA"))
+
+## View the data
+head(water_renew_df)
+```
+
+> After viewing the data, we can see that all three of the variables are being read as character variables. This is true for country, so I will leave that to remain that way, but for the other variables, it will need to be changed to numeric. Additionally, I will amend the titles of the variables to be formatted consistently across the board. Please see the below code for how I will handle this. Controlling for missing values (NA) has been handled when opening the file to be read (see above code).
+
+```{r include = TRUE, warning = FALSE, comment = NA}
+## Amend variables names for formatting and consistency
+names(water_renew_df) = c("country", "total_renewable_per_capita_m3_cap", "total_renewable")
+
+## Amend the total renewable variables to be read as numeric.
+library(dplyr)
+head(water_renew_df %>% mutate_at(c(2:3), as.numeric))
+
+## View data set after "cleaning"
+head(water_renew_df)
+```
+
+> After some cleaning and formatting, this data set is in better condition to be utilized for analyses! On to the next data set...
+
+2. Organisation for Economic Co-operation and Development. (2021). Depletion and growth of forest resources in terms of volume. OECD.Stat. https://stats.oecd.org/viewhtml.aspx?datasetcode=FOREST&lang=en
+
+* This data set includes data regarding forest resources by country - specifically in terms of depletion and growth.
+* This data first needs to be exported to an Excel file in order to extract the data. 
+* On the OECD Stat site, I was able to customize to select and export only those variables for which I am interested in. Once saved as an Excel file (.csv), the data can be reviewed and cleaned in R. I am selecting the variables of Natural Losses (in cubic meters per thousands) and Intensity of Use of Forest Resources (in ratio units) across ten years (2010-2019) from this data set. From only looking at 2019 alone, not much data was present.
+* To clean this data, I will ensure the format of the variable nomenclature schema is the same across the board, thereby being easily read and utilized in my analysis.
+* This source has the data as two separate data sets - one for natural losses and the other for intensity of usage of forest resources.
+
+```{r include = TRUE, warning = FALSE, comment = NA}
+## Set the working directory to the root of your DSC 520 directory
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+
+## Load the data (natural losses)
+forest_losses_df <- read.csv("Forest Resources.csv", na.strings = c("..", "NA"))
+
+## View the data
+head(forest_losses_df)
+
+## Load the data (intensity of use of forest resources)
+forest_usage_df <- read.csv("Forest Usage.csv", na.strings = c("..", "NA"))
+
+## View the data
+head(forest_usage_df)
+```
+
+> After viewing the data, we can see that all of the variables are being read as character variables. This is true for country, so I will leave that to remain that way, but for the other variables, it will need to be changed to numeric. Additionally, I will amend the titles of the variables to be formatted consistently across the board. Please see the below code for how I will handle this. Controlling for missing values (NA) has been handled when opening the file to be read (see above code).
+
+```{r include = TRUE, warning = FALSE, comment = NA}
+## Amend variables names for formatting and consistency
+names(forest_losses_df) = c("country", "losses_2010", "losses_2011", "losses_2012", "losses_2013", "losses_2014", "losses_2015", "losses_2016", "losses_2017", "losses_2018", "losses_2019")
+
+## Amend the total renewable variables to be read as numeric.
+head(forest_losses_df %>% mutate_at(c(2:11), as.numeric))
+
+
+## View data set after "cleaning"
+head(forest_losses_df)
+
+## Amend variables names for formatting and consistency
+names(forest_losses_df) = c("country", "usage_2010", "usage_2011", "usage_2012", "usage_2013", "usage_2014", "usage_2015", "usage_2016", "usage_2017", "usage_2018", "usage_2019")
+
+## Amend the total renewable variables to be read as numeric.
+head(forest_usage_df %>% mutate_at(c(2:11), as.numeric))
+
+## View data set after "cleaning"
+head(forest_usage_df)
+```
+
+> After cleaning/formatting and reviewing the data, it is better prepared for analysis.
+
+3.Organisation for Economic Co-operation and Development. (2021). Material resources. OECD.Stat. https://stats.oecd.org/viewhtml.aspx?datasetcode=MATERIAL_RESOURCES&lang=en
+
+* This data set includes data regarding material resources by country - specifically in terms of usage and footprint.
+* This data first needs to be exported to an Excel file in order to extract the data. 
+* Once saved as an Excel file (.csv), the data can be extracted and impoted into R to be cleaned and utilized for analysis. For this data set, I am selecting the variables of Domestic Material Consumption per Capita across ten years (2010-2019) and Material Footprint per capita across seven years (2010-2017: the data only goes through 2017). From only looking at 2019 alone, not much data was present. On the OECD Stat site, I was able to customize to select and export only those variables for which I am interested in.
+* To clean this data, I will ensure the format of the variable nomenclature schema is the same across the board, thereby being easily read and utilized in my analysis.
+* This source has the data as two separate data sets - one for material consumption and the other for material footprint.
+
+```{r include = TRUE, warning = FALSE, comment = NA}
+## Set the working directory to the root of your DSC 520 directory
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+
+## Load the data (natural losses)
+material_consumption_df <- read.csv("Material Domestic Consumption Per Capita.csv", na.strings = c("..", "NA"))
+
+## View the data
+head(material_consumption_df)
+
+## Load the data (intensity of use of forest resources)
+material_footprint_df <- read.csv("Material Footprint Per Capita.csv", na.strings = c("..", "NA"))
+
+## View the data
+head(material_footprint_df)
+```
+
+> After viewing the data, we can see that all of the variables are being read as character variables. This is true for country, so I will leave that to remain that way, but for the other variables, it will need to be changed to numeric. Additionally, I will amend the titles of the variables to be formatted consistently across the board. Please see the below code for how I will handle this. Controlling for missing values (NA) has been handled when opening the file to be read (see above code).
+
+```{r include = TRUE, warning = FALSE, comment = NA}
+## Amend variables names for formatting and consistency
+names(material_consumption_df) = c("country", "consumption_2010", "consumption_2011", "consumption_2012", "consumption_2013", "consumption_2014", "consumption_2015", "consumption_2016", "consumption_2017", "consumption_2018", "consumption_2019")
+
+## Amend the total renewable variables to be read as numeric.
+library(dplyr)
+head(material_consumption_df %>% mutate_at(c(2:11), as.numeric))
+
+## View data set after "cleaning"
+head(material_consumption_df)
+
+## Amend variables names for formatting and consistency
+names(material_footprint_df) = c("country", "footprint_2010", "footprint_2011", "footprint_2012", "footprint_2013", "footprint_2014", "footprint_2015", "footprint_2016", "footprint_2017")
+
+## Amend the total renewable variables to be read as numeric.
+head(material_footprint_df %>% mutate_at(c(2:9), as.numeric))
+
+## View data set after "cleaning"
+head(material_footprint_df)
+```
+
+> After cleaning/formatting and reviewing the data, it is better prepared for analysis.
+
+4. Organisation for Economic Co-operation and Development. (2021). Threatened species. OECD.Stat. https://stats.oecd.org/viewhtml.aspx?datasetcode=WILD_LIFE&lang=en
+
+* This data set includes data regarding threatened and endangered species by country - specifically divided out into animal classes.
+* This data first needs to be exported to an Excel file in order to extract the data. 
+* Once saved as an Excel file (.csv), the data can be extracted into and cleaned in R. For this data set, I am selecting the variable of Number of Critically Endangered Species. This data is for "to-date", so the number as of a country's current standing. On the OECD Stat site, I was able to customize to select and export only those variables for which I am interested in.
+* To clean this data, I will ensure the format of the variable nomenclature schema is the same across the board, thereby being easily read and utilized in my analysis.
+
+```{r include = TRUE, warning = FALSE, comment = NA}
+## Set the working directory to the root of your DSC 520 directory
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+
+## Load the data (natural losses)
+endangered_critical_df <- read.csv("Endangered Species Total Numbers.csv", na.strings = c("..", "NA"))
+
+## View the data
+head(endangered_critical_df)
+```
+
+> After viewing the data, we can see that not all of the variables we need to be read as numeric are being done as so. This will need to be amended. Additionally, I will amend the titles of the variables to be formatted consistently across the board. Please see the below code for how I will handle this. Controlling for missing values (NA) has been handled when opening the file to be read (see above code).
+
+```{r include = TRUE, warning = FALSE, comment = NA}
+## Amend variables names for formatting and consistency
+names(endangered_critical_df) = c("country", "mammals", "birds", "reptiles", "amphibians", "fish", "marine_fish", "freshwater_fish", "vascular_plants", "mosses", "lichens", "invertabrates")
+
+## Amend the total renewable variables to be read as numeric.
+library(dplyr)
+head(endangered_critical_df %>% mutate_at(c(2:11), as.numeric))
+
+## View data set after "cleaning"
+head(endangered_critical_df)
+```
+
+> After cleaning/formatting and reviewing the data, it is better prepared for analysis.
+
+5. The World Bank. (2021). Population, total. The World Bank. https://data.worldbank.org/indicator/SP.POP.TOTL
+
+* This data set includes data regarding population totals by country.
+* This data first needs to be exported to an Excel file in order to extract the data. 
+* The only variable for this data set is total population by country across time. I will be looking at the years of 2010-2020 for population totals.
+* To clean this data, I will ensure the format of the variable nomenclature schema is the same across the board, thereby being easily read and utilized in my analysis.
+
+```{r include = TRUE, warning = FALSE, comment = NA}
+## Set the working directory to the root of your DSC 520 directory
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+
+## Load the data (natural losses)
+pop_totals_df <- read.csv("Country Population Totals.csv", na.strings = c("..", "NA"))
+
+## View the data
+head(pop_totals_df)
+```
+
+> After viewing the data, we can see that not all of the variables we need to be read as numeric are being done as so. This will need to be amended. Additionally, I will amend the titles of the variables to be formatted consistently across the board. Please see the below code for how I will handle this. Controlling for missing values (NA) has been handled when opening the file to be read (see above code).
+
+```{r include = TRUE, warning = FALSE, comment = NA}
+## Amend variables names for formatting and consistency
+names(pop_totals_df) = c("country", "country_code", "indicator", "indicator_code", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")
+
+## Amend the total renewable variables to be read as numeric.
+library(dplyr)
+head(pop_totals_df %>% mutate_at(c(5:15), as.numeric))
+
+
+## View data set after "cleaning"
+head(pop_totals_df)
+```
+> After cleaning/formatting and reviewing the data, it is better prepared for analysis.
+
+6. The World Bank. (2021). GDP (current US$). The World Bank. https://data.worldbank.org/indicator/NY.GDP.MKTP.CD
+
+* This data set includes data regarding GDP totals by country.
+* This data first needs to be exported to an Excel file in order to extract the data. 
+* The only variable for this data set is total GDP by country across time. I will be looking at the years of 2010-2020 for population totals.
+* To clean this data, I will ensure the format of the variable nomenclature schema is the same across the board, thereby being easily read and utilized in my analysis.
+
+```{r include = TRUE, warning = FALSE, comment = NA}
+## Set the working directory to the root of your DSC 520 directory
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+
+## Load the data (natural losses)
+GDP_totals_df <- read.csv("Country GDP Totals.csv", na.strings = c("..", "NA"))
+
+## View the data
+head(GDP_totals_df)
+```
+
+> After viewing the data, we can see that not all of the variables we need to be read as numeric are being done as so. This will need to be amended. Additionally, I will amend the titles of the variables to be formatted consistently across the board. Please see the below code for how I will handle this. Controlling for missing values (NA) has been handled when opening the file to be read (see above code).
+
+```{r include = TRUE, warning = FALSE, comment = NA}
+## Amend variables names for formatting and consistency
+names(GDP_totals_df) = c("country", "country_code", "indicator", "indicator_code", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")
+
+## Amend the total renewable variables to be read as numeric.
+library(dplyr)
+head(GDP_totals_df %>% mutate_at(c(5:15), as.numeric))
+
+
+## View data set after "cleaning"
+head(GDP_totals_df)
+```
+
+> After cleaning/formatting and reviewing the data, it is better prepared for analysis.
+
+## What do the final data sets look like?
+
+> To paint a brief synopsis of what each of the data sets looks like after cleaning, please see below to view the first few lines of the data (I am not included the entire data sets to preserve space and mental energy for the parties who review of this report).
+
+```{r setup, include = TRUE, warning = FALSE, comment = NA}
+## Viewing all data sets to see what they look like
+head(water_renew_df)
+head(forest_losses_df)
+head(forest_usage_df)
+head(material_consumption_df)
+head(material_footprint_df)
+head(endangered_critical_df)
+head(pop_totals_df)
+head(GDP_totals_df)
+```
+
+## What information is not self-evident?
+
+> A few things may not be self-evident from these data sets. These include:
+
+* Because the data sets cannot be aligned/compared apples-to-apples, and because they each hold different information using different units of measurement, being able to ascertain what variables may be most impactful in my analysis is not self-evident. More specifically, at face value, it is difficult to ascertain how the variables may be correlated with one another and how I might align and scale these variables.
+* Expanding upon the previous point, these data sets include data from different time intervals - some span back years, while others only include the current year (or "most recent year"). This will need to be taken into consideration, as it is not evident from the data sets how well the variables will correlate from a time standpoint.
+* From looking at these data sets alone (separately), it is not self-evident which analyses should be used for which variables. This will require me to review all data sets (combined) to assess which statistical analyses to run, and which variables to include in which analysis.
+
+## What are different ways you could look at this data?
+
+> The different ways to look at this data include:
+
+* Looking at the data across time - however, this will only pertain to those variables that have more historical data and not those that only have 1 year's worth of data.
+* The data could be looked at by country - this will probably involve the bulk of my analysis, as I am interested in looking at the data country by country to see how the countries stack up against one another.
+* The data could be looked at cross-sectionally - more specifically, that cross-sectional data being countries or years (see the points above). This may involve a time-series analysis.
+* The data can be looked at by viewing certain variables as predictors (e.g., GDP and population) for impact on resources (e.g., water, forests, materials, wildlife).
+* The data can be looked at by country, or by region (an aggregate of countries that make up a continent or hemisphere, etc.).
+
+## How do you plan to slice and dice the data?
+
+> I plan to slice and dice the data in the following ways:
+
+* By country
+* By year
+* By region
+* By natural resource variables
+* I also plan to combine some of the data sets where it makes sense to get a better summary of the data by country in one data set (for example, combining the forest data sets and the material data sets).
+
+## How could you summarize your data to answer key questions?
+
+> In order to summarize my data to answer key questions, I will use the plots and tables described in the next step. Additionally, I will use descriptive statistics to help summarize the data - mean, median, mode, standard deviation, variance, etc. I will want to assess the measures of central tendancy and measures of dispersion. I will also want to have some summary correlational information, as the main premise of answering my research questions hinges upon assessing the relationships between the variables I will be looking at. Summary statistics will be useful for looking at individual countries, but also at specific regions/continents. It may also be useful to hone in on (drill-down) a couple of specific countries versus an entire laundry-list (5-10 spread out geographically versus 40, for example). Overall, I will want to have some individual and some aggregate summary statistics to see what kind of information I can glean that is meaningful.
+
+## What types of plots and tables will help you to illustrate the findings to your questions?
+
+> The types of plots and tables that will help to illustrate the findings to my questions include:
+
+* Plots for looking at usage trends across time will be extremely useful for my research on this specific topic. More specifically, it would be interesting to plot specific data points and then also plot a trend line within that plot indicating the direction we are heading in terms of usage of natural resources (is there an incline or decline from the past to the most recent?).
+*	Specifically for species, a table outlining the most critically endangered species classes with their relative percentages of remaining/destroyed by country would be a good way to see those numbers. Additionally, a bar graph or histogram would also be useful for displaying this data.
+*	I believe it would be insightful to have a table that includes the current data (current state of natural resources by country) in addition to columns that project the numbers for the next year (potentially 2022).
+* A plot of natural resource usage by type and GDP as well as a plot of natural resource usage by type and Population would be insightful for looking at how those variables are correlated.
+
+## Do you plan on incorporating any machine learning techniques to answer your research questions? Explain.
+
+> I am not certain quite yet if I will utilize machine learning techniques to answer my research questions, however, it may prove especially useful given that I am looking at a variety of variables. Machine learning can be helpful for more complex analyses. In any case, I am not an expert in machine learning techniques, therefore if I elect to utilize these techniques I am not certain of the validity that the results may hold. Machine learning often require very well-labeled data and an expert team to train the models to put into production. I also do not want my interpretations of the outcomes to rely too heavily on machine learning, especially for such an ethical matter as environmentalism. In our current world, we are increasingly moving towards humans trusting data and algorithms more than their personal insights, which can raise questions against the ethics of machine learning algorithms and systems. 
+
+## Questions for future steps.
+
+> Questions for future steps include:
+
+* Do the historical and descriptive analyses paint enough of a picture for where we are headed in terms of natural resource decline? Or do we need predictive modeling and forecasting to solidify more so what that future may be like? What other analyses may we need to compute?
+* What specific analyses are best suited for my selected variables and research questions? What else do I need to learn to be successful here?
+* What confounding variables might also need to be considered?
+* What other references and resources do I plan to consult and use as I analyze my data? What other resources might I be able to use to compare my results to for whether there is additional support for my findings?
+* How will I plan to validate my data and validate my findings? (Hint: I already know a bit about validation of models and goodness-of-fit!)
+
+## What do you not know how to do right now that you need to learn to answer your questions?
+
+> I know we will be learning machine learning in the upcoming final weeks, so I will need to spend some additional time studying that if I plan to utilize ML in my final analysis/project.
+
+## References
+1. IPCC. (2021). AR6 climate change 2021: The physical science basis. IPCC. 
+        https://www.ipcc.ch/report/ar6/wg1/#TS
+2. Please note: Also see the references listed and included in the "How to Import and Clean My Data" section. Additional resources will be included in the final cumulative project step as needed and as relevant.
