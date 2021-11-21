@@ -1,0 +1,1691 @@
+---
+title: "11.3 Final Project Step 1"
+author: "Madeleine Sharp"
+date: '2021-11-14'
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+---
+
+```{r include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+> As the developed world continues to become even more developed, the usage of our planet’s natural resources becomes a critical issue to consider. Not only does development impact environmental resource consumption, but one would ascertain that so does population increase – with more inhabitants on planet earth, there are fewer resources per capita. In the United Nations IPCC 2021 report on climate change (IPCC, 2021), a strong call to action was made – primarily citing human influence as one of the primary drivers of environmental decline and thus proposing escalated control and reduction of both human resource usage and human carbon footprints as an imperative solution. While this report focused specifically on climate change and its influencing factors, I would like to explore the issue of the depletion and availability of natural resources and the change in those resources across time. Additionally, I believe it is critical to not only consider historical data in this case, but to predict the landscape (no pun intended) of natural resources in the coming years utilizing predictive modeling of the data. Not only is this a crucial issue to explore and to formulate solutions for as it pertains to the earth, but for every living person now and those to come. By utilizing historical data trends regarding natural resources, we can forecast for tomorrow, and implement plans and solutions today to mitigate further degradation of the environment. 
+
+## So, What is the Problem?
+
+> Given the discussions surrounding climate change, natural resource decline, the degradation of our planet, population overload, and wealth/dvelopment impacting resource usage one would surmise that enough alarm bells have resounded regarding the health and well-being of our planet. Put more plainly, much stress has been placed upon our planet and its resources, and if control is not exercised to minimize any damage, those living on this planet in the generations to come may have a more difficult time living and the landscape of survival may change. The issue of planetary and environmental harm is not just an issue of environmental ethics, but of the ethics surrounding human life, too.
+
+## Addressing the Problem
+
+> One of the ways in which any problem can be addressed is via conducting some research in the form of data analysis. After all, in an endeavor to obtain any resolve or solution regarding the problem at hand, it is imperative to first truly understand the problem, which includes assessing available and pertinent data. By reviewing and analyzing any related data, patterns and insights may become clearer as to why the problem is what it is, what its potential roots may be, what relationships exist that may lend credence to the problem, etc. Overall, analyzing the data related to a topic will allow one to glean meaningful insights for proceeding with a solution. After all, one cannot simply be sure of what may be occurring until light is shed upon the matter. In simpler terms, it is important to "trust but verify" - while a hypothesis may be on the table, we cannot assume the hypothesis to be true (even though we may perhaps trust it is an educated guess). We must work towards verifying any hypothesis with data.
+
+> In this specific case for my project, I will be attempting to address the problem by analyzing data that may help to answer the below questions:
+
+1. Does a country's population impact its availability or decline of natural resources? More specifically:
+  * What is the relationship between a country's total population and its renewable water resources available?
+  * What is the relationship between a country's total population and its losses and usage of forest areas?
+  * What is the relationship between a country's total population and its material consumption and material footprint?
+  * What is the relationship between a country's total population and its total number of critically endangered species?
+  * What is the relationship between a country's total population and its total consumption of petroleum and other related liquids?
+  * What is the relationship between a country's total population and its percentage of protected terrestrial land?
+2. Does a country's wealth impact its availability or decline of natural resources? More specifically:
+  * What is the relationship between a country's wealth (GDP) and its renewable water resources available?
+  * What is the relationship between a country's wealth (GDP) and its losses and usage of forest areas?
+  * What is the relationship between a country's wealth (GDP) and its material consumption and material footprint?
+  * What is the relationship between a country's wealth (GDP) and its total number of critically endangered species?
+  * What is the relationship between a country's wealth (GDP) and its total consumption of petroleum and other related liquids?
+  * What is the relationship between a country's wealth (GDP) and its percentage of protected terrestrial land?
+3. Are any of the relationships between a country's wealth (GDP) and its population significant?
+4. Which countries have experienced the greatest decline in natural resources including water, forests, natural materials, wildlife, petroleum, and protected land?
+5. What do the natural resource changes look like across time?
+6. Is there a correlation between those changes and the changes in a country's population or GDP?
+7. Based on the historical data that is available related to these topics, can we make accurate predictions regarding the future of our planet's natural resources?
+
+## Analysis
+
+> Overall, for my analysis portion of the project, I will be focusing on running some specific analyses, including:
+  * Descriptive Statistics - I will be running descriptive summary statistics on each of my original datasets to get an idea and a feel for what the data     looks like and to understand what I am looking at from a measures of central tendency and measures of variability standpoint.
+  * Correlational Analyses - I will be running correlations between all variables, specifically doing so in the following manner:
+    * Using Country Population as an independent variable (IV) and assessing its relationship to all of the dependent variables (DVs) in this analysis,         which includes renewable water, forest losses and usage, material consumption and footprint, critically endangered species, petroleum and other           related liquids consumption, and protected terrestrial land. 
+    * Using Country GDP as an independent variable (IV) and assessing its relationship to all of the dependent variables (DVs) in this analysis, which          includes renewable water, forest losses and usage, material consumption and footprint, critically endangered species, petroleum and other related l       iquids consumption, and protected terrestrial land. 
+  * Time Series Plots and Analyses - For those variables that include data for more than a single year (some of my datasets only include data for one year     or a most recent year), I will be plotting them across time by country. More specifically:
+    * I will be plotting population as an IV with the countries present in each of the respective DVs (each dataset has different countries, so population       will be plotted multiple times for each DV). I will also then plot each respective DV across time.
+    * I will complete the above as well for a country's GDP as an IV.
+  
+> These measures will allow me to:
+  * Understand my datasets
+  * Assess any relationships present between the variables in question
+  * Assess the movement/direction of countries' population, GDP, and all DVs (for those applicable) across time
+  
+### Importing Datasets and Cleaning the Data Part I
+
+#### Water Resources Dataset
+
+1. Organisation for Economic Co-operation and Development. (2021). Freshwater resources (long term annual average). OECD.Stat. https://stats.oecd.org/viewhtml.aspx?datasetcode=WATER_RESOURCES&lang=en
+
+  * This dataset includes data regarding freshwater resources by country - with an emphasis on renewable water.
+  * The data is last updated as of March 2021. The only available data is for the most recent year (2021).
+  * This data first needs to be exported to an Excel file in order to extract the data. 
+  * On the OECD Stat site, I was able to customize to select and export only those variables for which I am interested in (which was quite helpful)! Once     saved as an Excel file (.csv), I am able to import the data within R to be cleaned for use. I am selecting the variables of Total Renewable per Capita     (m3/cap) and Total Renewable from this data set.
+        * The Total Renewable per Capita variable is measured in cubic meters per capita. In other words, it measures a block of space that is 1m x 1m x            1m, height x width x depth, which is a highly accurate volume calculation. The figures represent a measurement in the billions (1 = 1 billion). 
+        * The Total Renewable variable is also measured in cubic meters. The figures represent a measurement in the billions (1 = 1 billion). 
+  * To clean this data, I will ensure the format of the variable nomenclature schema is the same across the board, thereby being easily read and utilized     in my analyses.
+
+> Water Dataset: Loaded and Cleaned
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+## Set the working directory to the root of your DSC 520 directory
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+
+## Load the data
+water_renew_df <- read.csv("Water Resources.csv", na.strings = c("..", "NA"))
+
+## View the data
+head(water_renew_df)
+
+## Amend variables names for formatting and consistency
+names(water_renew_df) = c("country", "total_renewable_per_capita_m3_cap_2021", "total_renewable_2021")
+
+head(water_renew_df)
+```
+
+#### Forest Resources Datasets
+
+2. Organisation for Economic Co-operation and Development. (2021). Depletion and growth of forest resources in terms of volume. OECD.Stat. https://stats.oecd.org/viewhtml.aspx?datasetcode=FOREST&lang=en
+
+  * This dataset includes data regarding forest resources by country - specifically in terms of depletion and growth.
+  * This dataset includes data pulled in for the years of 2010-2019 (2019 was the most recent year).
+  * This data first needs to be exported to an Excel file in order to extract the data. 
+  * On the OECD Stat site, I was able to customize to select and export only those variables for which I am interested in. Once saved as an Excel file        (.csv), the data can be reviewed and cleaned in R. I am selecting the variables of Natural Losses (in cubic meters, units are in the thousands in         terms of volume) and Intensity of Use of Forest Resources (in ratio units, in terms of volume) across ten years (2010-2019) from this data set. From      only looking at 2019 alone, not much data was present.
+      * Each of these variables has been pulled into R in its own dataset/dataframe.
+  * To clean this data, I will ensure the format of the variable nomenclature schema is the same across the board, thereby being easily read and utilized     in my analysis.
+  * This source has the data as two separate data sets - one for natural losses and the other for intensity of usage of forest resources.
+
+> Forest Datasets: Loaded and Cleaned
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+## Set the working directory to the root of your DSC 520 directory
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+
+## Load the data (natural losses)
+forest_losses_df <- read.csv("Forest Resources.csv", na.strings = c("..", "NA"))
+
+## View the data
+head(forest_losses_df)
+
+## Load the data (intensity of use of forest resources)
+forest_usage_df <- read.csv("Forest Usage.csv", na.strings = c("..", "NA"))
+
+## View the data
+head(forest_usage_df)
+
+## Amend variables names for formatting and consistency (necessary variables are already read as numeric)
+names(forest_losses_df) = c("country", "losses_2010", "losses_2011", "losses_2012", "losses_2013", "losses_2014", "losses_2015", "losses_2016", "losses_2017", "losses_2018", "losses_2019")
+
+head(forest_losses_df)
+
+## Amend variables names for formatting and consistency (necessary variables are already read as numeric)
+names(forest_usage_df) = c("country", "usage_2010", "usage_2011", "usage_2012", "usage_2013", "usage_2014", "usage_2015", "usage_2016", "usage_2017", "usage_2018", "usage_2019")
+
+head(forest_usage_df)
+```
+
+#### Material Resources Data Sets
+
+3.Organisation for Economic Co-operation and Development. (2021). Material resources. OECD.Stat. https://stats.oecd.org/viewhtml.aspx?datasetcode=MATERIAL_RESOURCES&lang=en
+
+  * This dataset includes data regarding material resources by country - specifically in terms of usage and footprint.
+  * This dataset includes data pulled in for the years of 2010-2019 and for 2010-2017 (see below).
+  * This data first needs to be exported to an Excel file in order to extract the data. 
+  * Once saved as an Excel file (.csv), the data can be extracted and imported into R to be cleaned and utilized for analysis. For this data set, I am        selecting the variables of Domestic Material Consumption per Capita (kilograms per capita, in the thousands) across ten years (2010-2019) and Material     Footprint per Capita (kilograms per capita, in the thousands) across seven years (2010-2017: the data only goes through 2017). From only looking at       2019 alone for material consumption, not much data was present. On the OECD Stat site, I was able to customize to select and export only those            variables for which I am interested in.
+      * Each of these variables has been pulled into R in its own dataset/dataframe.
+  * To clean this data, I will ensure the format of the variable nomenclature schema is the same across the board, thereby being easily read and utilized     in my analysis.
+  * This source has the data as two separate data sets - one for material consumption (2010-2019) and the other for material footprint (2010-2017).
+
+> Material Datasets: Loaded and Cleaned
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+## Set the working directory to the root of your DSC 520 directory
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+
+## Load the data (natural losses)
+material_consumption_df <- read.csv("Material Domestic Consumption Per Capita.csv", na.strings = c("..", "NA"))
+
+## View the data
+head(material_consumption_df)
+
+## Load the data (intensity of use of forest resources)
+material_footprint_df <- read.csv("Material Footprint Per Capita.csv", na.strings = c("..", "NA"))
+
+## View the data
+head(material_footprint_df)
+
+## Amend variables names for formatting and consistency (necessary variables are already read as numeric)
+names(material_consumption_df) = c("country", "consumption_2010", "consumption_2011", "consumption_2012", "consumption_2013", "consumption_2014", "consumption_2015", "consumption_2016", "consumption_2017", "consumption_2018", "consumption_2019")
+
+head(material_consumption_df)
+
+## Amend variables names for formatting and consistency (necessary variables are already read as numeric)
+names(material_footprint_df) = c("country", "footprint_2010", "footprint_2011", "footprint_2012", "footprint_2013", "footprint_2014", "footprint_2015", "footprint_2016", "footprint_2017")
+
+head(material_footprint_df)
+```
+
+#### Endangered Species Data Set
+
+4. Organisation for Economic Co-operation and Development. (2021). Threatened species. OECD.Stat. https://stats.oecd.org/viewhtml.aspx?datasetcode=WILD_LIFE&lang=en
+
+  * This dataset includes data regarding threatened and endangered species by country - specifically divided out into animal classes.
+  * The data is last updated as of March 2021. The only available data is for the most recent year (2021).
+  * This data first needs to be exported to an Excel file in order to extract the data. 
+  * Once saved as an Excel file (.csv), the data can be extracted into and cleaned in R. For this data set, I am selecting the variable of Number of          Critically Endangered Species (total number of species). This data is for "to-date", so the number as of a country's current standing. On the OECD        Stat site, I was able to customize to select and export only those variables for which I am interested in.
+  * To clean this data, I will ensure the format of the variable nomenclature schema is the same across the board, thereby being easily read and utilized     in my analysis.
+
+> Critically Endangered Species Dataset: Loaded and Cleaned
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+## Set the working directory to the root of your DSC 520 directory
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+
+## Load the data (natural losses)
+endangered_critical_df <- read.csv("Endangered Species Total Numbers.csv", na.strings = c("..", "NA"))
+
+## View the data
+head(endangered_critical_df)
+
+## Amend variables names for formatting and consistency
+names(endangered_critical_df) = c("country", "mammals", "birds", "reptiles", "amphibians", "fish", "marine_fish", "freshwater_fish", "vascular_plants", "mosses", "lichens", "invertabrates", "total")
+
+## Amend the total renewable variables to be read as numeric and view the amended data.
+library(dplyr)
+endangered_critical_2 <- endangered_critical_df %>% mutate_at(c(2:12), as.numeric)
+head(endangered_critical_2)
+```
+
+#### Petroleum Data Set
+
+5. U.S. Energy Information Administration. (2021). Consumption: Petroleum and other liquids. EIA. https://www.eia.gov/international/data/world/petroleum-and-other-liquids/annual-refined-petroleum-products-consumption?pd=5&p=0000001001vg0000000000000000000000000000000000g&u=0&f=A&v=mapbubble&a=-&i=none&vo=value&&t=C&g=00000000000000000000000000000000000000000000000001&l=249-ruvvvvvfvtvnvv1vrvvvvfvvvvvvfvvvou20evvvvvvvvvvnvvvs0008&s=94694400000&e=1577836800000
+
+  * This dataset includes data regarding petroleum and other related liquid resources by country - with an emphasis on consumption.
+  * This dataset includes data pulled in for the years of 2010-2020.
+  * This data first needs to be exported to an Excel file in order to extract the data. 
+  * On the OECD Stat site, I was able to customize to select and export only those variables for which I am interested in (which was quite helpful)! Once     saved as an Excel file (.csv), I am able to import the data within R to be cleaned for use. I am selecting the variable of Petroleum and Other Liquids     Consumption (Mb/d - thousands of barrels per day).
+  * To clean this data, I will ensure the format of the variable nomenclature schema is the same across the board, thereby being easily read and utilized     in my analyses.
+
+> Petroleum Dataset: Loaded and Cleaned
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+## Set the working directory to the root of your DSC 520 directory
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+
+## Load the data
+petroleum_df <- read.csv("Petroleum and Other Liquids Consumption.csv", na.strings = c("..", "NA"))
+
+## View the data
+head(petroleum_df)
+
+## Amend variables names for formatting and consistency
+names(petroleum_df) = c("country", "pet_use_2010", "pet_use_2011", "pet_use_2012", "pet_use_2013", "pet_use_2014", "pet_use_2015", "pet_use_2016", "pet_use_2017", "pet_use_2018", "pet_use_2019", "pet_use_2020")
+
+## Amend the total renewable variables to be read as numeric.
+petroleum_2 <- petroleum_df %>% mutate_at(c(2:12), as.numeric)
+head(petroleum_2)
+```
+
+#### Protected Land Data Set
+
+6. The World Bank. (2021). Terrestrial Protected Areas (% of Total Land Area). The World Bank. https://data.worldbank.org/indicator/ER.LND.PTLD.ZS
+
+  * This dataset includes data regarding protected land by country.
+  * This dataset includes data pulled in for the years of 2010-2020.
+  * This data first needs to be exported to an Excel file in order to extract the data. 
+  * The only variable for this data set is protected land (as a percentage of total land area) by country across time. I will be looking at the years of      2010-2020 for population totals.
+  * To clean this data, I will ensure the format of the variable nomenclature schema is the same across the board, thereby being easily read and utilized     in my analysis.
+
+> Protected Land Dataset: Loaded and Cleaned
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+## Set the working directory to the root of your DSC 520 directory
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+
+## Load the data
+land_df <- read.csv("Percentage Total Land Area of Protected Terrestrial Areas.csv", na.strings = c("..", "NA"))
+
+## View the data
+head(land_df)
+
+## Amend variables names for formatting and consistency (necessary variables are already read as numeric)
+names(land_df) = c("country", "land_2016", "land_2017", "land_2018")
+
+head(land_df)
+```
+
+#### Population Data Set
+
+7. The World Bank. (2021). Population, total. The World Bank. https://data.worldbank.org/indicator/SP.POP.TOTL
+
+  * This dataset includes data regarding population totals by country.
+  * This dataset includes data pulled in for the years of 2010-2020.
+  * This data first needs to be exported to an Excel file in order to extract the data. 
+  * The only variable for this data set is total population (total number, as is) by country across time. I will be looking at the years of 2010-2020 for     population totals.
+  * To clean this data, I will ensure the format of the variable nomenclature schema is the same across the board, thereby being easily read and utilized     in my analysis.
+  
+> Population Totals Dataset: Loaded and Cleaned
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+## Set the working directory to the root of your DSC 520 directory
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+
+## Load the data (natural losses)
+pop_totals_df <- read.csv("Country Population Totals.csv", na.strings = c("..", "NA"), stringsAsFactors = FALSE)
+
+## View the data
+head(pop_totals_df)
+
+## Amend variables names for formatting and consistency (necessary variables are already read as numeric)
+names(pop_totals_df) = c("country", "country_code", "indicator", "indicator_code", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")
+
+head(pop_totals_df)
+```
+
+#### GDP (Wealth) Data Set
+
+8. The World Bank. (2021). GDP (current US$). The World Bank. https://data.worldbank.org/indicator/NY.GDP.MKTP.CD
+
+  * This dataset includes data regarding GDP totals by country.
+  * This dataset includes data pulled in for the years of 2010-2020.
+  * This data first needs to be exported to an Excel file in order to extract the data. 
+  * The only variable for this data set is total GDP (in US dollars) by country across time. I will be looking at the years of 2010-2020 for population       totals.
+  * To clean this data, I will ensure the format of the variable nomenclature schema is the same across the board, thereby being easily read and utilized     in my analysis.
+
+> GDP Totals Dataset: Loaded and Cleaned
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+## Set the working directory to the root of your DSC 520 directory
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+
+## Load the data (natural losses)
+GDP_totals_df <- read.csv("Country GDP Totals.csv", na.strings = c("..", "NA"))
+
+## View the data
+head(GDP_totals_df)
+
+## Amend variables names for formatting and consistency (necessary variables are already read as numeric)
+names(GDP_totals_df) = c("country", "country_code", "indicator", "indicator_code", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")
+
+head(GDP_totals_df)
+```
+
+#### Datasets After Initial Cleaning
+
+> To paint a brief synopsis of what each of the data sets looks like after cleaning, please see below to view the first few lines of the data (I am not including the entire datasets to preserve space within this report).
+
+```{r setup, echo = FALSE, warning = FALSE, comment = NA}
+## Viewing all data sets to see what they look like
+head(water_renew_df)
+head(forest_losses_df)
+head(forest_usage_df)
+head(material_consumption_df)
+head(material_footprint_df)
+head(endangered_critical_2)
+head(petroleum_2)
+head(land_df)
+head(pop_totals_df)
+head(GDP_totals_df)
+```
+
+### Cleaning Part II
+
+> Now that each dataset is fully cleaned and ready to be used individually, I will be comparing these datasets for an additional step of cleaning. Because I care to assess the relationships present within the datasets based upon a country's wealth and a country's population, I need to ensure that each country I am assessing has the appropriate data available for all 10 variable measures I am assessing.
+
+> Because not every dataset I am utilizing includes the same number of and specific/identical countries, I want to ensure that the available countries for my independent variables (Population Totals and GDP) are compared with the available countries for each of the 10 dependent variables I am assessing (on an individual basis). In other words, before I complete my analysis of, for example, renewable water resources and population totals, I wish to restrict the countries analyzed to only those present in both datasets. This will eliminate any missing data and will allow for less skewed results (especially because I don't care to analyze a specific selection of countries, but rather want to get a glimpse of countries/regions overall, even if that means different sets of countries are present in different datasets). So, for example, my analysis of the relationship between population and renewable water resources may have a different set of countries available than my analysis of the relationship between population and forest losses, and that is okay. As long as I can ascertain overall and assess the relationship of a country's population (or wealth) relative to my other variables individually, that is what I am seeking. 
+
+#### Comparing and Combining the Population Dataset with Each Dependent Variable Dataset
+
+```{r echo = FALSE, results = "hide", warning = FALSE, comment = NA}
+## Set the working directory to the root of your DSC 520 directory
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+
+## Determine which countries are present in each data set compared to both population and GDP.
+
+## Combine/merge the data sets with respect to population.
+
+combine_pop_water <- merge.data.frame(pop_totals_df, water_renew_df, by = intersect(country(pop_totals_df), country(water_renew_df)), by.x = "country", by.y = "country", all = FALSE)
+combine_pop_water
+
+combine_pop_forest_loss <- merge.data.frame(pop_totals_df, forest_losses_df, by = intersect(country(pop_totals_df), country(forest_losses_df)), by.x = "country", by.y = "country", all = FALSE)
+combine_pop_forest_loss
+
+combine_pop_forest_use <- merge.data.frame(pop_totals_df, forest_usage_df, by = intersect(country(pop_totals_df), country(forest_usage_df)), by.x = "country", by.y = "country", all = FALSE)
+combine_pop_forest_use
+
+combine_pop_materials_consume <- merge.data.frame(pop_totals_df, material_consumption_df, by = intersect(country(pop_totals_df), country(material_consumption_df)), by.x = "country", by.y = "country", all = FALSE)
+combine_pop_materials_consume
+
+combine_pop_materials_footprint <- merge.data.frame(pop_totals_df, material_footprint_df, by = intersect(country(pop_totals_df), country(material_footprint_df)), by.x = "country", by.y = "country", all = FALSE)
+combine_pop_materials_footprint
+
+combine_pop_endangered <- merge.data.frame(pop_totals_df, endangered_critical_2, by = intersect(country(pop_totals_df), country(endangered_critical_2)), by.x = "country", by.y = "country", all = FALSE)
+combine_pop_endangered
+
+combine_pop_petroleum <- merge.data.frame(pop_totals_df, petroleum_2, by = intersect(country(pop_totals_df), country(petroleum_2)), by.x = "country", by.y = "country", all = FALSE)
+combine_pop_petroleum
+
+combine_pop_land <- merge.data.frame(pop_totals_df, land_df, by = intersect(country(pop_totals_df), country(land_df)), by.x = "country", by.y = "country", all = FALSE)
+combine_pop_land
+```
+
+#### Comparing and Combining the GDP Dataset with Each Dependent Variable Dataset
+
+```{r echo = FALSE, results = "hide", warning = FALSE, comment = NA}
+## Combine/merge the data sets with respect to GDP.
+
+combine_GDP_water <- merge.data.frame(GDP_totals_df, water_renew_df, by = intersect(country(GDP_totals_df), country(water_renew_df)), by.x = "country", by.y = "country", all = FALSE)
+combine_GDP_water
+
+combine_GDP_forest_loss <- merge.data.frame(GDP_totals_df, forest_losses_df, by = intersect(country(GDP_totals_df), country(forest_losses_df)), by.x = "country", by.y = "country", all = FALSE)
+combine_GDP_forest_loss
+
+combine_GDP_forest_use <- merge.data.frame(GDP_totals_df, forest_usage_df, by = intersect(country(GDP_totals_df), country(forest_usage_df)), by.x = "country", by.y = "country", all = FALSE)
+combine_GDP_forest_use
+
+combine_GDP_materials_consume <- merge.data.frame(GDP_totals_df, material_consumption_df, by = intersect(country(GDP_totals_df), country(material_consumption_df)), by.x = "country", by.y = "country", all = FALSE)
+combine_GDP_materials_consume
+
+combine_GDP_materials_footprint <- merge.data.frame(GDP_totals_df, material_footprint_df, by = intersect(country(GDP_totals_df), country(material_footprint_df)), by.x = "country", by.y = "country", all = FALSE)
+combine_GDP_materials_footprint
+
+combine_GDP_endangered <- merge.data.frame(GDP_totals_df, endangered_critical_2, by = intersect(country(GDP_totals_df), country(endangered_critical_2)), by.x = "country", by.y = "country", all = FALSE)
+combine_GDP_endangered
+
+combine_GDP_petroleum <- merge.data.frame(GDP_totals_df, petroleum_2, by = intersect(country(GDP_totals_df), country(petroleum_2)), by.x = "country", by.y = "country", all = FALSE)
+combine_GDP_petroleum
+
+combine_GDP_land <- merge.data.frame(GDP_totals_df, land_df, by = intersect(country(GDP_totals_df), country(land_df)), by.x = "country", by.y = "country", all = FALSE)
+combine_GDP_land
+```
+
+### Descriptive Statistics
+
+> To obtain some basic information on each of the datasets, I have run some descriptive summary statistics. These descriptive statistics have been run on the original, cleaned datasets.Primarily, I was interested in viewing the mean (average) for the amounts of the different variables in each of these datasets.
+
+## Water Dataset
+```{r echo = FALSE, warning = FALSE, comment = NA}
+## Set the working directory to the root of your DSC 520 directory
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+
+## Summary descriptive statistics of each original data set (not the combined ones).
+
+summary(water_renew_df)
+```
+
+> From the output of these statistics, we can ascertain the following:
+
+  * For all of the countries present within the dataset, the mean total water renewable resources in cubic meters per capita is approximately 28,050.
+  * The mean for total renewable water overall was approximately 321 unit ratios.
+
+## Forest Datasets
+```{r echo = FALSE, warning = FALSE, comment = NA}
+summary(forest_losses_df)
+summary(forest_usage_df)
+```
+> From the output of these statistics, we can see the average forest losses and usage for each of the years for the years 2010 to 2019 (for all countries).
+
+## Material Datasets
+```{r echo = FALSE, warning = FALSE, comment = NA}
+summary(material_consumption_df)
+summary(material_footprint_df)
+```
+> From the output of these statistics, we can see the average material consumption and footprints for each of the years for the years 2010 to 2019 (for all countries).
+
+## Endangered Species Dataset
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+summary(endangered_critical_2)
+```
+> From the output of these statistics, we can see the average total number of critically endangered species for a variety of wildlife classes for all countries present within the dataset.
+
+## Petroleum and Other Liquids Dataset
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+summary(petroleum_2)
+```
+> From the output of these statistics, we can see the average petroleum consumption for each of the years for the years 2010 to 2020 (for all countries).
+
+## Land Dataset
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+summary(land_df)
+```
+> From the output of these statistics, we can see the average percentage of protected land for each year for the years 2016 to 2018 (for all countries).
+
+## Population Dataset
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+summary(pop_totals_df)
+```
+> From the output of these statistics, we can see the average population for each of the years for the years 2010 to 2020 (for all countries).
+
+## GDP Dataset
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+summary(GDP_totals_df)
+```
+> From the output of these statistics, we can see the average GDP for each of the years for the years 2010 to 2020 (for all countries).
+  
+### Correlational Analyses
+
+> In an endeavor to answer my research questions posed earlier in this final project report, I determined that running some correlational analyses would be beneficial for assessing the relationships below:
+  
+  * A country's population and:
+    * Renewable water resources
+    * Forest losses
+    * Forest usage
+    * Material consumption
+    * Material footprint
+    * Critically endangered species
+    * Petroleum and other liquids consumption
+    * Projected terrestrial land
+  * A country's GDP and:
+    * Renewable water resources
+    * Forest losses
+    * Forest usage
+    * Material consumption
+    * Material footprint
+    * Critically endangered species
+    * Petroleum and other liquids consumption
+    * Projected terrestrial land
+    
+> In each of the below sections, I run a correlational analysis for each IV with respect to each DV. It is important to note, that prior to any correlational analysis, I first checked my datasets for their distributions - since none of my data was normally distributed, and since all of the variables I am measuring are numeric (interval/ratio) in nature, each of the correlational tests I run will be a Spearman's Correlation. 
+
+#### Population and Water Correlation (2020/2021)
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+library(ggplot2)
+theme_set(theme_minimal())
+options(scipen = 999)
+## Set the working directory to the root of your DSC 520 directory
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+
+## Correlations - Total Country Populations
+## Perform a correlation analysis of: 
+## 1. All variables:
+
+## Correlation between a country's 2020 population total and renewable water per capita and total.
+
+## Water Renewables
+## First, I will assess the distributions of the data in order to determine which correlational test I will use (histograms and density plots).
+hist(combine_pop_water$`2020`)
+hist(combine_pop_water$total_renewable_per_capita_m3_cap_2021)
+hist(combine_pop_water$total_renewable_2021)
+
+ggplot(combine_pop_water, aes(`2020`)) +  geom_density()
+ggplot(combine_pop_water, aes(total_renewable_per_capita_m3_cap_2021)) +  geom_density()
+ggplot(combine_pop_water, aes(total_renewable_2021)) +  geom_density()
+
+## Because the data is not normally distributed (and it is numeric), I will utilize Spearman's Correlation.
+cor(combine_pop_water$`2020`, combine_pop_water$total_renewable_per_capita_m3_cap_2021, use = "complete.obs", method = "spearman")
+cor(combine_pop_water$`2020`, combine_pop_water$total_renewable_2021, use = "complete.obs", method = "spearman")
+
+cor.test(combine_pop_water$`2020`, combine_pop_water$total_renewable_per_capita_m3_cap_2021, method = "spearman", exact = FALSE, conf.level = 0.99)
+cor.test(combine_pop_water$`2020`, combine_pop_water$total_renewable_2021, method = "spearman", exact = FALSE, conf.level = 0.99)
+```
+
+> This test is running a correlation between the same countries present in both the population dataset and the water renewables dataset. The test is being run for the year 2020 for population (most recent population data collected) and 2021 for water (most recent data collected). The output of this correlational analysis is:
+
+  * Population and Renewable Water Per Capita: 
+    * Spearman's rho value of -0.44, indicating a negative, moderately strong relationship between a country's population and renewable water resources         per capita.       
+    * This means that as one of the variables goes up (population), the other goes down (renewable water), or vice versa. 
+    * It appears as though population moderately impacts the amount of renewable water a country has.
+    * Because the p-value is less than 0.05, we can determine that the relationship is significant.
+    
+  * Population and Renewable Water (Total): 
+    * Spearman's rho value of 0.58, indicating a positive, moderately strong relationship between a country's population and renewable water resources.       * This means that as one of the variables goes up (population), the other goes down (renewable water), or vice versa. 
+    * It appears as though population moderately impacts the amount of renewable water a country has.
+    * Because the p-value is less than 0.05, we can determine that the relationship is significant.
+
+## Population and Forest Correlation (Forest Losses and Forest Usage) (2019)
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+library(ggplot2)
+theme_set(theme_minimal())
+options(scipen = 999)
+## Set the working directory to the root of your DSC 520 directory
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+## Forest Losses
+## First, I will assess the distributions of the data in order to determine which correlational test I will use (histograms and density plots).
+hist(combine_pop_forest_loss$`2019`)
+hist(combine_pop_forest_loss$losses_2019)
+
+ggplot(combine_pop_forest_loss, aes(`2019`)) +  geom_density()
+ggplot(combine_pop_forest_loss, aes(losses_2019)) +  geom_density()
+
+## Because the data is not normally distributed (and it is numeric), I will utilize Spearman's Correlation.
+cor(combine_pop_forest_loss$`2019`, combine_pop_forest_loss$losses_2019, use = "complete.obs", method = "spearman")
+
+cor.test(combine_pop_forest_loss$`2019`, combine_pop_forest_loss$losses_2019, method = "spearman", exact = FALSE, conf.level = 0.99)
+
+## Forest Usage
+## First, I will assess the distributions of the data in order to determine which correlational test I will use (histograms and density plots).
+hist(combine_pop_forest_use$`2019`)
+hist(combine_pop_forest_use$usage_2019)
+
+ggplot(combine_pop_forest_use, aes(`2019`)) +  geom_density()
+ggplot(combine_pop_forest_use, aes(usage_2019)) +  geom_density()
+
+## Because the data is not normally distributed (and it is numeric), I will utilize Spearman's Correlation.
+cor(combine_pop_forest_use$`2019`, combine_pop_forest_use$usage_2019, use = "complete.obs", method = "spearman")
+
+cor.test(combine_pop_forest_use$`2019`, combine_pop_forest_use$usage_2019, method = "spearman", exact = FALSE, conf.level = 0.99)
+```
+> This test is running a correlation between the same countries present in both the population dataset and each of the forest datasets (forest losses and forest usage). The test is being run for the year 2019 for population and forest losses/forest usage, as 2019 is the most recent data collected for the forest datasets. Using 2019 measures for both will allow for a more accurate assessment and outcome. The output of this correlational analysis is:
+
+  * Population and Forest Losses: 
+    * Spearman's rho value of 0.09, indicating a positive, weak relationship between a country's population and total forest losses for that country.    
+    * This means that as one of the variables goes up (population), the other also goes up (forest losses), or vice versa (as one goes down so does the other). 
+    * It appears as though population does not really impact the forest losses a country has experienced.
+    * Because the p-value is NOT less than 0.05, we can determine that the relationship is not significant.
+    
+  * Population and Forest Usage: 
+    * Spearman's rho value of -0.19, indicating a negative, weak relationship between a country's population and total forest resource usage for that country.    
+    * This means that as one of the variables goes up (population), the other goes down (forest usage), or vice versa. 
+    * It appears as though population does not really impact a country's forest usage.
+    * Because the p-value is NOT less than 0.05, we can determine that the relationship is not significant.
+
+## Population and Materials Correlation (Material Consumption and Material Footprint) (2019 and 2017, Respectively)
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+## Correlation between a country's population total and material consumption (2019) and footprint (2017) based on the most recent available data.
+
+## Material Consumption
+## First, I will assess the distributions of the data in order to determine which correlational test I will use (histograms and density plots).
+hist(combine_pop_materials_consume$`2019`)
+hist(combine_pop_materials_consume$consumption_2019)
+
+ggplot(combine_pop_materials_consume, aes(`2019`)) +  geom_density()
+ggplot(combine_pop_materials_consume, aes(consumption_2019)) +  geom_density()
+
+## Because the data is not normally distributed (and it is numeric), I will utilize Spearman's Correlation.
+cor(combine_pop_materials_consume$`2019`, combine_pop_materials_consume$consumption_2019, use = "complete.obs", method = "spearman")
+
+cor.test(combine_pop_materials_consume$`2019`, combine_pop_materials_consume$consumption_2019, method = "spearman", exact = FALSE, conf.level = 0.99)
+
+## Material Footprint
+## First, I will assess the distributions of the data in order to determine which correlational test I will use (histograms and density plots).
+hist(combine_pop_materials_footprint$`2017`)
+hist(combine_pop_materials_footprint$footprint_2017)
+
+ggplot(combine_pop_materials_footprint, aes(`2017`)) +  geom_density()
+ggplot(combine_pop_materials_footprint, aes(footprint_2017)) +  geom_density()
+
+## Because the data is not normally distributed (and it is numeric), I will utilize Spearman's Correlation.
+cor(combine_pop_materials_footprint$`2017`, combine_pop_materials_footprint$footprint_2017, use = "complete.obs", method = "spearman")
+
+cor.test(combine_pop_materials_footprint$`2017`, combine_pop_materials_footprint$footprint_2017, method = "spearman", exact = FALSE, conf.level = 0.99)
+```
+> This test is running a correlation between the same countries present in both the population dataset and each of the material datasets (material consumption and material footprint). The test is being run for the year 2019 for population and material consumption (2019 was the most recent data collected for this variable), and 2017 for population and material footprint (2017 is the most recent data collected). Using the same yearly measures for both will allow for a more accurate assessment and outcome. The output of this correlational analysis is:
+
+  * Population and Material Consumption: 
+    * Spearman's rho value of -0.63, indicating a negative, stronger relationship between a country's population and material consumption per capita for that country.    
+    * This means that as one of the variables goes up (population), the other goes down (material consumption), and vice versa.
+    * It appears as though population does impact a country's material consumption.
+    * Because the p-value is less than 0.05, we can determine that the relationship is significant.
+    
+  * Population and Material Footprint: 
+    * Spearman's rho value of -0.36, indicating a negative, weaker relationship between a country's population and material footprint per capita for that country.    
+    * This means that as one of the variables goes up (population), the other goes down (material footprint), and vice versa.
+    * It appears as though population may slightly (or perhaps, does not really) impact a country's material footprint.
+    * Because the p-value is less than 0.05, we can determine that the relationship is significant.
+
+## Population and Critically Endangered Species Correlation (2020/2021)
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+
+## Correlation between a country's population total and amount of critically endangered species (total).
+## First, I will assess the distributions of the data in order to determine which correlational test I will use (histograms and density plots).
+hist(combine_pop_endangered$`2020`)
+hist(combine_pop_endangered$total)
+
+ggplot(combine_pop_endangered, aes(`2020`)) +  geom_density()
+ggplot(combine_pop_endangered, aes(total)) +  geom_density()
+
+## Because the data is not normally distributed (and it is numeric), I will utilize Spearman's Correlation.
+cor(combine_pop_endangered$`2020`, combine_pop_endangered$total, use = "complete.obs", method = "spearman")
+
+cor.test(combine_pop_endangered$`2020`, combine_pop_endangered$total, method = "spearman", exact = FALSE, conf.level = 0.99)
+```
+
+> This test is running a correlation between the same countries present in both the population dataset and the critically endangered species dataset. The test is being run for the year 2020 for population and 2021 for critically endangered species (most recent and only data available). The output of this correlational analysis is:
+
+  * Population and Critically Endangered Species: 
+    * Spearman's rho value of 0.46, indicating a positive, moderate relationship between a country's population and its total number of critically endangered species.   
+    * This means that as one of the variables goes up (population), the other also goes up (endangered species), or vice versa (as one goes down so does the other). 
+    * It appears as though population may slightly impact a country's total number of critically endangered species.
+    * Because the p-value is less than 0.05, we can determine that the relationship is significant.
+    
+## Population and Petroleum and Other Liquids Consumption (2018)
+    
+```{r echo = FALSE, warning = FALSE, comment = NA}
+## Correlation between a country's population total and amount of petroleum and other liquids consumed (total) (2018 - lots of missing data for 2019 and 2020).
+## First, I will assess the distributions of the data in order to determine which correlational test I will use (histograms and density plots).
+hist(combine_pop_petroleum$`2018`)
+hist(combine_pop_petroleum$pet_use_2018)
+
+ggplot(combine_pop_petroleum, aes(`2018`)) +  geom_density()
+ggplot(combine_pop_petroleum, aes(pet_use_2018)) +  geom_density()
+
+## Because the data is not normally distributed (and it is numeric), I will utilize Spearman's Correlation.
+cor(combine_pop_petroleum$`2018`, combine_pop_petroleum$pet_use_2018, use = "complete.obs", method = "spearman")
+
+cor.test(combine_pop_petroleum$`2018`, combine_pop_petroleum$pet_use_2018, method = "spearman", exact = FALSE, conf.level = 0.99)
+```
+
+> This test is running a correlation between the same countries present in both the population dataset and the petroleum and other liquids consumption dataset. The test is being run for the year 2018 for population and the petroleum dataset (most recent year of data available). Using 2018 measures for both will allow for a more accurate assessment and outcome. The output of this correlational analysis is:
+
+  * Population and Petroleum/Other Liquids Consumption: 
+    * Spearman's rho value of 0.73, indicating a positive, strong relationship between a country's population and its consumption of petroleum and other related liquids. 
+    * This means that as one of the variables goes up (population), the other also goes up (petroleum consumption), or vice versa (as one goes down so  does the other). 
+    * It appears as though population does have an impact on a country's total amount of petroleum and other liquids consumption.
+    * Because the p-value is less than 0.05, we can determine that the relationship is significant (extremely so, in this case).
+    
+## Population and Protected Terrestrial Land (2018)
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+
+## Correlation between a country's population total and percentage of protected land (2018 - the most recent data available).
+## First, I will assess the distributions of the data in order to determine which correlational test I will use (histograms and density plots).
+hist(combine_pop_land$`2018`)
+hist(combine_pop_land$land_2018)
+
+ggplot(combine_pop_land, aes(`2018`)) +  geom_density()
+ggplot(combine_pop_land, aes(land_2018)) +  geom_density()
+
+## Because the data is not normally distributed (and it is numeric), I will utilize Spearman's Correlation.
+cor(combine_pop_land$`2018`, combine_pop_land$land_2018, use = "complete.obs", method = "spearman")
+
+cor.test(combine_pop_land$`2018`, combine_pop_land$land_2018, method = "spearman", exact = FALSE, conf.level = 0.99)
+```
+
+> This test is running a correlation between the same countries present in both the population dataset and the protected land dataset. The test is being run for the year 2018 for population and the protected land dataset (most recent year of data available). Using 2018 measures for both will allow for a more accurate assessment and outcome. The output of this correlational analysis is:
+
+  * Population and Protected Terrestrial Land: 
+    * Spearman's rho value of -0.02, indicating a negative, weak relationship between a country's population and its percentage of protected land.
+    * This means that as one of the variables goes up (population), the other goes down (protected land), and vice versa.
+    * It appears as though population does not have an impact on a country's total percentage of protected terrestrial land.
+    * Because the p-value is NOT less than 0.05, we can determine that the relationship is not significant.
+
+#### GDP and Water Correlation (2020/2021)
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+## Correlations - Total Country GDPs
+## Perform a correlation analysis of: 
+## 1. All variables:
+
+## Correlation between a country's 2020 population total and renewable water per capita and total.
+
+## Water Renewables
+## First, I will assess the distributions of the data in order to determine which correlational test I will use (histograms and density plots).
+hist(combine_GDP_water$`2020`)
+hist(combine_GDP_water$total_renewable_per_capita_m3_cap_2021)
+hist(combine_GDP_water$total_renewable_2021)
+
+ggplot(combine_GDP_water, aes(`2020`)) +  geom_density()
+ggplot(combine_GDP_water, aes(total_renewable_per_capita_m3_cap_2021)) +  geom_density()
+ggplot(combine_GDP_water, aes(total_renewable_2021)) +  geom_density()
+
+## Because the data is not normally distributed (and it is numeric), I will utilize Spearman's Correlation.
+cor(combine_GDP_water$`2020`, combine_GDP_water$total_renewable_per_capita_m3_cap_2021, use = "complete.obs", method = "spearman")
+cor(combine_GDP_water$`2020`, combine_GDP_water$total_renewable_2021, use = "complete.obs", method = "spearman")
+
+cor.test(combine_GDP_water$`2020`, combine_GDP_water$total_renewable_per_capita_m3_cap_2021, method = "spearman", exact = FALSE, conf.level = 0.99)
+cor.test(combine_GDP_water$`2020`, combine_GDP_water$total_renewable_2021, method = "spearman", exact = FALSE, conf.level = 0.99)
+```
+> This test is running a correlation between the same countries present in both the GDP dataset and the water renewables dataset. The test is being run for the year 2020 for GDP (most recent GDP data collected) and 2021 for water (most recent data collected). The output of this correlational analysis is:
+
+  * GDP and Renewable Water Per Capita: 
+    * Spearman's rho value of -0.39, indicating a negative, moderate relationship between a country's GDP and renewable water resources per capita.       
+    * This means that as one of the variables goes up (GDP), the other goes down (renewable water), or vice versa. 
+    * It appears as though GDP may moderately impacts the amount of renewable water a country has.
+    * Because the p-value is less than 0.05, we can determine that the relationship is significant.
+    
+  * GDP and Renewable Water (Total): 
+    * Spearman's rho value of 0.54, indicating a positive, moderately strong relationship between a country's GDP and renewable water resources.       
+    * This means that as one of the variables goes up (GDP), the other goes down (renewable water), or vice versa. 
+    * It appears as though GDP moderately impacts the amount of renewable water a country has.
+    * Because the p-value is less than 0.05, we can determine that the relationship is significant.
+
+## GDP and Forest Correlation (Forest Losses and Forest Usage) (2019)
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+## Correlation between a country's 2019 population total and forest losses and usage (no forest loss or usage data is available for the year 2020).
+
+## Forest Losses
+## First, I will assess the distributions of the data in order to determine which correlational test I will use (histograms and density plots).
+hist(combine_GDP_forest_loss$`2019`)
+hist(combine_GDP_forest_loss$losses_2019)
+
+ggplot(combine_GDP_forest_loss, aes(`2019`)) +  geom_density()
+ggplot(combine_GDP_forest_loss, aes(losses_2019)) +  geom_density()
+
+## Because the data is not normally distributed (and it is numeric), I will utilize Spearman's Correlation.
+cor(combine_GDP_forest_loss$`2019`, combine_GDP_forest_loss$losses_2019, use = "complete.obs", method = "spearman")
+
+cor.test(combine_GDP_forest_loss$`2019`, combine_GDP_forest_loss$losses_2019, method = "spearman", exact = FALSE, conf.level = 0.99)
+
+## Forest Usage
+## First, I will assess the distributions of the data in order to determine which correlational test I will use (histograms and density plots).
+hist(combine_GDP_forest_use$`2019`)
+hist(combine_GDP_forest_use$usage_2019)
+
+ggplot(combine_GDP_forest_use, aes(`2019`)) +  geom_density()
+ggplot(combine_GDP_forest_use, aes(usage_2019)) +  geom_density()
+
+## Because the data is not normally distributed (and it is numeric), I will utilize Spearman's Correlation.
+cor(combine_GDP_forest_use$`2019`, combine_GDP_forest_use$usage_2019, use = "complete.obs", method = "spearman")
+
+cor.test(combine_GDP_forest_use$`2019`, combine_GDP_forest_use$usage_2019, method = "spearman", exact = FALSE, conf.level = 0.99)
+```
+
+> This test is running a correlation between the same countries present in both the GDP dataset and each of the forest datasets (forest losses and forest usage). The test is being run for the year 2019 for GDP and forest losses/forest usage, as 2019 is the most recent data collected for the forest datasets. Using 2019 measures for both will allow for a more accurate assessment and outcome. The output of this correlational analysis is:
+
+  * GDP and Forest Losses: 
+    * Spearman's rho value of -0.09, indicating a negative, weak relationship between a country's GDP and total forest losses for that country.    
+    * This means that as one of the variables goes up (GDP), the other goes down (forest losses), or vice versa. 
+    * It appears as though GDP does not really impact the forest losses a country has experienced.
+    * Because the p-value is NOT less than 0.05, we can determine that the relationship is not significant.
+    
+  * GDP and Forest Usage: 
+    * Spearman's rho value of -0.48, indicating a negative, moderate relationship between a country's GDP and total forest resource usage for that country.    
+    * This means that as one of the variables goes up (GDP), the other goes down (forest usage), or vice versa. 
+    * It appears as though GDP does not really impact a country's forest usage.
+    * Because the p-value is NOT less than 0.05, we can determine that the relationship is not significant.
+    
+## GDP and Materials Correlation (Material Consumption and Material Footprint) (2019 and 2017, Respectively)
+    
+```{r echo = FALSE, warning = FALSE, comment = NA}
+
+## Correlation between a country's population total and material consumption (2019) and footprint (2017) based on the most recent available data.
+
+## Material Consumption
+## First, I will assess the distributions of the data in order to determine which correlational test I will use (histograms and density plots).
+hist(combine_GDP_materials_consume$`2019`)
+hist(combine_GDP_materials_consume$consumption_2019)
+
+ggplot(combine_GDP_materials_consume, aes(`2019`)) +  geom_density()
+ggplot(combine_GDP_materials_consume, aes(consumption_2019)) +  geom_density()
+
+## Because the data is not normally distributed (and it is numeric), I will utilize Spearman's Correlation.
+cor(combine_GDP_materials_consume$`2019`, combine_GDP_materials_consume$consumption_2019, use = "complete.obs", method = "spearman")
+
+cor.test(combine_GDP_materials_consume$`2019`, combine_GDP_materials_consume$consumption_2019, method = "spearman", exact = FALSE, conf.level = 0.99)
+
+## Material Footprint
+## First, I will assess the distributions of the data in order to determine which correlational test I will use (histograms and density plots).
+hist(combine_GDP_materials_footprint$`2017`)
+hist(combine_GDP_materials_footprint$footprint_2017)
+
+ggplot(combine_GDP_materials_footprint, aes(`2017`)) +  geom_density()
+ggplot(combine_GDP_materials_footprint, aes(footprint_2017)) +  geom_density()
+
+## Because the data is not normally distributed (and it is numeric), I will utilize Spearman's Correlation.
+cor(combine_GDP_materials_footprint$`2017`, combine_GDP_materials_footprint$footprint_2017, use = "complete.obs", method = "spearman")
+
+cor.test(combine_GDP_materials_footprint$`2017`, combine_GDP_materials_footprint$footprint_2017, method = "spearman", exact = FALSE, conf.level = 0.99)
+```
+
+> This test is running a correlation between the same countries present in both the GDP dataset and each of the material datasets (material consumption and material footprint). The test is being run for the year 2019 for GDP and material consumption (2019 was the most recent data collected for this variable), and 2017 for GDP and material footprint (2017 is the most recent data collected). Using the same yearly measures for both will allow for a more accurate assessment and outcome. The output of this correlational analysis is:
+
+  * GDP and Material Consumption: 
+    * Spearman's rho value of -0.48, indicating a negative, moderately strong relationship between a country's GDP and material consumption per capita for that country.  
+    * This means that as one of the variables goes up (GDP), the other goes down (material consumption), and vice versa.
+    * It appears as though GDP may impact a country's material consumption.
+    * Because the p-value is less than 0.05, we can determine that the relationship is significant.
+    
+  * GDP and Material Footprint: 
+    * Spearman's rho value of -0.09, indicating a negative, weak relationship between a country's GDP and material footprint per capita for that country. 
+    * This means that as one of the variables goes up (GDP), the other goes down (material footprint), and vice versa.
+    * It appears as though GDP does not impact a country's material footprint.
+    * Because the p-value is NOT less than 0.05, we can determine that the relationship is not significant.
+
+## GDP and Critically Endangered Species Correlation (2020/2021)
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+
+## Correlation between a country's population total and amount of critically endangered species (total).
+## First, I will assess the distributions of the data in order to determine which correlational test I will use (histograms and density plots).
+hist(combine_GDP_endangered$`2020`)
+hist(combine_GDP_endangered$total)
+
+ggplot(combine_GDP_endangered, aes(`2020`)) +  geom_density()
+ggplot(combine_GDP_endangered, aes(total)) +  geom_density()
+
+## Because the data is not normally distributed (and it is numeric), I will utilize Spearman's Correlation.
+cor(combine_GDP_endangered$`2020`, combine_GDP_endangered$total, use = "complete.obs", method = "spearman")
+
+cor.test(combine_GDP_endangered$`2020`, combine_GDP_endangered$total, method = "spearman", exact = FALSE, conf.level = 0.99)
+```
+
+> This test is running a correlation between the same countries present in both the GDP dataset and the critically endangered species dataset. The test is being run for the year 2020 for GDP and 2021 for critically endangered species (most recent and only data available). The output of this correlational analysis is:
+
+  * GDP and Critically Endangered Species: 
+    * Spearman's rho value of 0.55, indicating a positive, moderately strong relationship between a country's GDP and its total number of critically endangered species.  
+    * This means that as one of the variables goes up (GDP), the other also goes up (endangered species), or vice versa (as one goes down so does the other). 
+    * It appears as though GDP may impact a country's total number of critically endangered species.
+    * Because the p-value is less than 0.05, we can determine that the relationship is significant.
+
+## GDP and Petroleum and Other Liquids Consumption (2018)
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+## Correlation between a country's population total and amount of petroleum and other liquids consumed (total) (2018 - lots of missing data for 2019 and 2020).
+## First, I will assess the distributions of the data in order to determine which correlational test I will use (histograms and density plots).
+hist(combine_GDP_petroleum$`2018`)
+hist(combine_GDP_petroleum$pet_use_2018)
+
+ggplot(combine_GDP_petroleum, aes(`2018`)) +  geom_density()
+ggplot(combine_GDP_petroleum, aes(pet_use_2018)) +  geom_density()
+
+## Because the data is not normally distributed (and it is numeric), I will utilize Spearman's Correlation.
+cor(combine_GDP_petroleum$`2018`, combine_GDP_petroleum$pet_use_2018, use = "complete.obs", method = "spearman")
+
+cor.test(combine_GDP_petroleum$`2018`, combine_GDP_petroleum$pet_use_2018, method = "spearman", exact = FALSE, conf.level = 0.99)
+```
+
+> This test is running a correlation between the same countries present in both the GDP dataset and the petroleum and other liquids consumption dataset. The test is being run for the year 2018 for GDP and the petroleum dataset (most recent year of data available). Using 2018 measures for both will allow for a more accurate assessment and outcome. The output of this correlational analysis is:
+
+  * Population and Petroleum/Other Liquids Consumption: 
+    * Spearman's rho value of 0.97, indicating a positive, extremely strong relationship between a country's GDP and its consumption of petroleum and other related             liquids.  
+    * This means that as one of the variables goes up (GDP), the other also goes up (petroleum consumption), or vice versa (as one goes down so does the other). 
+    * It appears as though GDP does have an impact on a country's total amount of petroleum and other liquids consumption.
+    * Because the p-value is less than 0.05, we can determine that the relationship is significant (extremely so, in this case).
+    
+## GDP and Protected Terrestrial Land (2018)
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+## Correlation between a country's population total and percentage of protected land (2018 - the most recent data available).
+## First, I will assess the distributions of the data in order to determine which correlational test I will use (histograms and density plots).
+hist(combine_GDP_land$`2018`)
+hist(combine_GDP_land$land_2018)
+
+ggplot(combine_GDP_land, aes(`2018`)) +  geom_density()
+ggplot(combine_GDP_land, aes(land_2018)) +  geom_density()
+
+## Because the data is not normally distributed (and it is numeric), I will utilize Spearman's Correlation.
+cor(combine_GDP_land$`2018`, combine_GDP_land$land_2018, use = "complete.obs", method = "spearman")
+
+cor.test(combine_GDP_land$`2018`, combine_GDP_land$land_2018, method = "spearman", exact = FALSE, conf.level = 0.99)
+```
+
+> This test is running a correlation between the same countries present in both the GDP dataset and the protected land dataset. The test is being run for the year 2018 for GDP and the protected land dataset (most recent year of data available). Using 2018 measures for both will allow for a more accurate assessment and outcome. The output of this correlational analysis is:
+
+  * GDP and Protected Terrestrial Land: 
+    * Spearman's rho value of 0.08, indicating a positive, weak relationship between a country's GDP and its percentage of protected land.
+    * This means that as one of the variables goes up (GDP), so does the other (protected land), and vice versa (down/down).
+    * It appears as though GDP does not have an impact on a country's total percentage of protected terrestrial land.
+    * Because the p-value is NOT less than 0.05, we can determine that the relationship is not significant.
+
+
+### Time Series Analyses
+
+> Time series analyses will only be completed on those datasets that have multiple years of data available. Those datasets with only one year available (or only the most recent year of data available) will not be utilized in a time series analysis, as this type of analysis would not apply to those cases. For my analysis, running time series and respective plots will allow me to understand and visualize changes over time for the various variable measures.
+
+> These measures include:
+
+  * Population and forest loss
+  * Population and forest usage
+  * Population and material consumption
+  * Population and material footprint
+  * Population and petroleum consumption
+  * Population and protected land
+  * GDP and forest loss
+  * GDP and forest usage
+  * GDP and material consumption
+  * GDP and material footprint
+  * GDP and petroleum consumption
+  * GDP and protected land
+
+## Population and Forest Loss (2010-2019)
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+library(tidyr)
+library(dplyr)
+library(zoo)
+library(reshape2)
+library(lubridate)
+
+## Time series analyses over time for the same countries that are available in the population data set and each respective variable data set (in those cases in which it applies).
+
+## Population + Forest Loss
+## Parse out relevant country population data from the combined dataset (so we obtain only the data for the countries in common with the forest loss variable) and make new dataset.
+## Population
+ts_pop_forestloss_df <- combine_pop_forest_loss[,c("country", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")]
+## ts_pop_forestloss_df
+
+## Take the parsed out variables and pivot the dates to prepare for time series analysis.
+pivot_pop_fl <- ts_pop_forestloss_df %>% pivot_longer(cols = c("2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"), names_to = "year", values_to = "count")
+## pivot_pop_fl
+
+## Amend the date (year) so that it can be appropriately used in a time series analysis.
+pivot_pop_fl$year <- as.Date(pivot_pop_fl$year, format = "%Y")
+## pivot_pop_fl
+
+## Plot values across time (time series)
+ggplot2::ggplot(pivot_pop_fl,aes(x = year, y = count, color = country, group = country)) + geom_line() + ggtitle("Population")
+
+## Time series equation
+ts_pop_fl <- ts(pivot_pop_fl, start=c(2010, 1), end=c(2019, 1), frequency=1)
+
+## Parse out forest loss data.
+## Forest Loss
+ts_forestloss_df <- combine_pop_forest_loss[,c("country", "losses_2010", "losses_2011", "losses_2012", "losses_2013", "losses_2014", "losses_2015", "losses_2016", "losses_2017", "losses_2018", "losses_2019")]
+## ts_forestloss_df
+
+## Rename and take the parsed out variables and pivot the dates to prepare for time series analysis.
+names(ts_forestloss_df) = c("country", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019")
+## ts_forestloss_df
+
+## Pivot
+pivot_fl <- ts_forestloss_df %>% pivot_longer(cols = c("2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019"), names_to = "year", values_to = "count")
+## pivot_fl
+
+## Amend the date (year) so that it can be appropriately used in a time series analysis.
+pivot_fl$year <- as.Date(pivot_fl$year, format = "%Y")
+## pivot_fl
+
+## Plot values across time (time series)
+ggplot2::ggplot(pivot_fl,aes(x = year, y = count, color = country, group = country)) + geom_line() + ggtitle("Forest Losses")
+
+## Time series equation
+ts_fl <- ts(pivot_fl, start=c(2010, 1), end=c(2019, 1), frequency=1)
+ts_fl
+```
+> In the above time series plots, we can see:
+
+  * The first plot (which is population), shows a slight incline in population for some countries with stagnation or a decline in a few others. 
+  * The second plot, forest losses, indicates relatively similar amounts available between the different countries.
+  
+> The accompanying output from the time series equation is also present.
+  
+## Population and Forest Usage (2010-2019)
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+
+## Time series analyses over time for the same countries that are available in the population data set and each respective variable data set (in those cases in which it applies).
+
+## Population + Forest Usage
+## Parse out relevant country population data from the combined dataset (so we obtain only the data for the countries in common with the forest loss variable) and make new dataset.
+## Population
+ts_pop_forestuse_df <- combine_pop_forest_use[,c("country", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")]
+## ts_pop_forestuse_df
+
+## Take the parsed out variables and pivot the dates to prepare for time series analysis.
+pivot_pop_fu <- ts_pop_forestuse_df %>% pivot_longer(cols = c("2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"), names_to = "year", values_to = "count")
+## pivot_pop_fu
+
+## Amend the date (year) so that it can be appropriately used in a time series analysis.
+pivot_pop_fu$year <- as.Date(pivot_pop_fu$year, format = "%Y")
+## pivot_pop_fu
+
+## Plot values across time (time series)
+ggplot2::ggplot(pivot_pop_fu,aes(x = year, y = count, color = country, group = country)) + geom_line() + ggtitle("Population")
+
+## Time series equation
+ts_pop_fu <- ts(pivot_pop_fu, start=c(2010, 1), end=c(2019, 1), frequency=1)
+
+## Parse out forest usage data.
+## Forest Usage
+ts_forestuse_df <- combine_pop_forest_use[,c("country", "usage_2010", "usage_2011", "usage_2012", "usage_2013", "usage_2014", "usage_2015", "usage_2016", "usage_2017", "usage_2018", "usage_2019")]
+## ts_forestuse_df
+
+## Rename and take the parsed out variables and pivot the dates to prepare for time series analysis.
+names(ts_forestuse_df) = c("country", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019")
+## ts_forestuse_df
+
+## Pivot
+pivot_fu <- ts_forestuse_df %>% pivot_longer(cols = c("2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019"), names_to = "year", values_to = "count")
+## pivot_fu
+
+## Amend the date (year) so that it can be appropriately used in a time series analysis.
+pivot_fu$year <- as.Date(pivot_fu$year, format = "%Y")
+## pivot_fu
+
+## Plot values across time (time series)
+ggplot2::ggplot(pivot_fu,aes(x = year, y = count, color = country, group = country)) + geom_line() + ggtitle("Forest Usage")
+
+## Time series equation
+ts_fu <- ts(pivot_fu, start=c(2010, 1), end=c(2019, 1), frequency=1)
+ts_fu
+```
+> In the above time series plots, we can see:
+
+  * The first plot (which is population), is quite similar to the forest losses population plot. 
+  * The second plot, forest usage, indicates some interesting and different trends between countries. The changes appear to be quite dynamic in nature - going up and down with peak (spikes) and valleys.
+
+> The accompanying output from the time series equation is also present.
+
+## Population and Material Consumption (2010-2019)
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+
+## Time series analyses over time for the same countries that are available in the population data set and each respective variable data set (in those cases in which it applies).
+
+## Population + Material Consumption
+## Parse out relevant country population data from the combined dataset (so we obtain only the data for the countries in common with the material consumption variable) and make new dataset.
+## Population
+ts_pop_matconsume_df <- combine_pop_materials_consume[,c("country", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")]
+## ts_pop_matconsume_df
+
+## Take the parsed out variables and pivot the dates to prepare for time series analysis.
+pivot_pop_mc <- ts_pop_matconsume_df %>% pivot_longer(cols = c("2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"), names_to = "year", values_to = "count")
+## pivot_pop_mc
+
+## Amend the date (year) so that it can be appropriately used in a time series analysis.
+pivot_pop_mc$year <- as.Date(pivot_pop_mc$year, format = "%Y")
+## pivot_pop_mc
+
+## Plot values across time (time series)
+ggplot2::ggplot(pivot_pop_mc,aes(x = year, y = count, color = country, group = country)) + geom_line() + ggtitle("Population")
+
+## Time series equation
+ts_pop_mc <- ts(pivot_pop_mc, start=c(2010, 1), end=c(2019, 1), frequency=1)
+
+## Parse out materials consumption dataset.
+## Material Consumption
+ts_matconsume_df <- combine_pop_materials_consume[,c("country", "consumption_2010", "consumption_2011", "consumption_2012", "consumption_2013", "consumption_2014", "consumption_2015", "consumption_2016", "consumption_2017", "consumption_2018", "consumption_2019")]
+## ts_matconsume_df
+
+## Rename and take the parsed out variables and pivot the dates to prepare for time series analysis.
+names(ts_matconsume_df) = c("country", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019")
+## ts_matconsume_df
+
+## Pivot
+pivot_mc <- ts_matconsume_df %>% pivot_longer(cols = c("2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019"), names_to = "year", values_to = "count")
+## pivot_mc
+
+## Amend the date (year) so that it can be appropriately used in a time series analysis.
+pivot_mc$year <- as.Date(pivot_mc$year, format = "%Y")
+## pivot_mc
+
+## Plot values across time (time series)
+ggplot2::ggplot(pivot_mc,aes(x = year, y = count, color = country, group = country)) + geom_line() + ggtitle("Material Consumption")
+
+## Time series equation
+ts_mc <- ts(pivot_mc, start=c(2010, 1), end=c(2019, 1), frequency=1)
+ts_mc
+```
+> In the above time series plots, we can see:
+
+  * The first plot (which is population), is quite similar to the other population plots - pretty steady numbers across time. 
+  * The second plot, material consumption, indicates some interesting and different trends between countries. The changes appear to be quite dynamic in nature - going up and down with peak (spikes) and valleys.
+  
+> The accompanying output from the time series equation is also present.
+
+## Population and Material Footprint (2010-2017)
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+
+## Time series analyses over time for the same countries that are available in the population data set and each respective variable data set (in those cases in which it applies).
+
+## Population + Material Footprint
+## Parse out relevant country population data from the combined dataset (so we obtain only the data for the countries in common with the material footprint variable) and make new dataset.
+## Population
+ts_pop_matfootprint_df <- combine_pop_materials_footprint[,c("country", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")]
+## ts_pop_matfootprint_df
+
+## Take the parsed out variables and pivot the dates to prepare for time series analysis.
+pivot_pop_mf <- ts_pop_matfootprint_df %>% pivot_longer(cols = c("2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"), names_to = "year", values_to = "count")
+## pivot_pop_mf
+
+## Amend the date (year) so that it can be appropriately used in a time series analysis.
+pivot_pop_mf$year <- as.Date(pivot_pop_mf$year, format = "%Y")
+## pivot_pop_mf
+
+## Plot values across time (time series)
+ggplot2::ggplot(pivot_pop_mf,aes(x = year, y = count, color = country, group = country)) + geom_line() + ggtitle("Population")
+
+## Time series equation
+ts_pop_mf <- ts(pivot_pop_mf, start=c(2010, 1), end=c(2017, 1), frequency=1)
+
+## Parse out materials footprint dataset.
+## Material Footprint
+ts_matfoot_df <- combine_pop_materials_footprint[,c("country", "footprint_2010", "footprint_2011", "footprint_2012", "footprint_2013", "footprint_2014", "footprint_2015", "footprint_2016", "footprint_2017")]
+## ts_matfoot_df
+
+## Rename and take the parsed out variables and pivot the dates to prepare for time series analysis.
+names(ts_matfoot_df) = c("country", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")
+## ts_matfoot_df
+
+## Pivot
+pivot_mf <- ts_matfoot_df %>% pivot_longer(cols = c("2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017"), names_to = "year", values_to = "count")
+## pivot_mf
+
+## Amend the date (year) so that it can be appropriately used in a time series analysis.
+pivot_mf$year <- as.Date(pivot_mf$year, format = "%Y")
+## pivot_mf
+
+## Plot values across time (time series)
+ggplot2::ggplot(pivot_mf,aes(x = year, y = count, color = country, group = country)) + geom_line() + ggtitle("Material Footprint")
+
+## Time series equation
+ts_mf <- ts(pivot_mf, start=c(2010, 1), end=c(2017, 1), frequency=1)
+ts_mf
+```
+
+> In the above time series plots, we can see:
+
+  * The first plot (which is population), is quite similar to the other population plots - pretty steady numbers across time. 
+  * The second plot, material footprint, is also pretty steady across time - with a slight increase - and one country with higher numbers than the rest.
+  
+> The accompanying output from the time series equation is also present.
+
+## Population and Petroleum/Other Liquids Consumed (2010-2020)
+
+```{r echo = FALSE, warning = FALSE, comment = NA, out.width="5%", out.height="5%"}
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+library(cowplot)
+## Time series analyses over time for the same countries that are available in the population data set and each respective variable data set (in those cases in which it applies).
+
+## Population + Petroleum
+## Parse out relevant country population data from the combined dataset (so we obtain only the data for the countries in common with the petroleum variable) and make new dataset.
+## Population
+ts_pop_petuse_df <- combine_pop_petroleum[,c("country", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")]
+## ts_pop_petuse_df
+
+## Take the parsed out variables and pivot the dates to prepare for time series analysis.
+pivot_pop_pet <- ts_pop_petuse_df %>% pivot_longer(cols = c("2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"), names_to = "year", values_to = "count")
+## pivot_pop_pet
+
+## Amend the date (year) so that it can be appropriately used in a time series analysis.
+pivot_pop_pet$year <- as.Date(pivot_pop_pet$year, format = "%Y")
+## pivot_pop_pet
+
+## Plot values across time (time series)
+ggplot2::ggplot(pivot_pop_pet,aes(x = year, y = count, color = country, group = country)) + geom_line() + theme(legend.position = "none", legend.key.size = unit(0.01, "cm"), plot.margin=unit(c(1,1,1.5,1.2),"cm")) + ggtitle("Population")
+
+## Time series equation
+ts_pop_pet <- ts(pivot_pop_pet, start=c(2010, 1), end=c(2020, 1), frequency=1)
+
+## Parse out petroleum dataset.
+## Petroleum
+ts_pet_df <- combine_pop_petroleum[,c("country", "pet_use_2010", "pet_use_2011", "pet_use_2012", "pet_use_2013", "pet_use_2014", "pet_use_2015", "pet_use_2016", "pet_use_2017", "pet_use_2018", "pet_use_2019", "pet_use_2020")]
+## ts_pet_df
+
+## Rename and take the parsed out variables and pivot the dates to prepare for time series analysis.
+names(ts_pet_df) = c("country", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")
+## ts_pet_df
+
+## Pivot
+pivot_pet <- ts_pet_df %>% pivot_longer(cols = c("2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"), names_to = "year", values_to = "count")
+## pivot_pet
+
+## Amend the date (year) so that it can be appropriately used in a time series analysis.
+pivot_pet$year <- as.Date(pivot_pet$year, format = "%Y")
+## pivot_pet
+
+## Plot values across time (time series)
+ggplot2::ggplot(pivot_pet,aes(x = year, y = count, color = country, group = country)) + geom_line() + theme(legend.position = "none", legend.key.size = unit(0.01, "cm"), plot.margin=unit(c(1,1,1.5,1.2),"cm")) + ggtitle("Petroleum Consumption")
+
+## Time series equation
+ts_pet <- ts(pivot_pet, start=c(2010, 1), end=c(2020, 1), frequency=1)
+ts_pet
+```
+> In the above time series plots, we can see:
+
+  * The first plot (which is population), is a bit different from the other population plots - there are a couple of country outliers.
+  * The second plot, petroleum consumption, also includes a couple of country outliers.
+  * Legends were not included with these plots, as too many countries existed in the population and petroleum datasets (both datasets possessed many countries in common      with one another).
+  
+> The accompanying output from the time series equation is also present.
+
+## Population and Protected Land (2016-2018)
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+
+## Time series analyses over time for the same countries that are available in the population data set and each respective variable data set (in those cases in which it applies).
+
+## Population + Protected Land
+## Parse out relevant country population data from the combined dataset (so we obtain only the data for the countries in common with the protected land variable) and make new dataset.
+## Population
+ts_pop_land_df <- combine_pop_land[,c("country", "2016", "2017", "2018", "2019", "2020")]
+## ts_pop_land_df
+
+## Take the parsed out variables and pivot the dates to prepare for time series analysis.
+pivot_pop_land <- ts_pop_land_df %>% pivot_longer(cols = c("2016", "2017", "2018", "2019", "2020"), names_to = "year", values_to = "count")
+## pivot_pop_land
+
+## Amend the date (year) so that it can be appropriately used in a time series analysis.
+pivot_pop_land$year <- as.Date(pivot_pop_land$year, format = "%Y")
+## pivot_pop_land
+
+## Plot values across time (time series)
+ggplot2::ggplot(pivot_pop_land,aes(x = year, y = count, color = country, group = country)) + geom_line() + theme(legend.position = "none", legend.key.size = unit(0.01, "cm"), plot.margin=unit(c(1,1,1.5,1.2),"cm")) + ggtitle("Population")
+
+## Time series equation
+ts_pop_land <- ts(pivot_pop_land, start=c(2016, 1), end=c(2018, 1), frequency=1)
+
+## Parse out protected land dataset.
+## Protected Land
+ts_land_df <- combine_pop_land[,c("country", "land_2016", "land_2017", "land_2018")]
+## ts_land_df
+
+## Rename and take the parsed out variables and pivot the dates to prepare for time series analysis.
+names(ts_land_df) = c("country", "2016", "2017", "2018")
+## ts_land_df
+
+## Pivot
+pivot_land <- ts_land_df %>% pivot_longer(cols = c("2016", "2017", "2018"), names_to = "year", values_to = "count")
+## pivot_land
+
+## Amend the date (year) so that it can be appropriately used in a time series analysis.
+pivot_land$year <- as.Date(pivot_land$year, format = "%Y")
+## pivot_land
+
+## Plot values across time (time series)
+ggplot2::ggplot(pivot_land,aes(x = year, y = count, color = country, group = country)) + geom_line() + theme(legend.position = "none", legend.key.size = unit(0.01, "cm"), plot.margin=unit(c(1,1,1.5,1.2),"cm")) + ggtitle("% of Protected Land")
+
+## Time series equation
+ts_land <- ts(pivot_land, start=c(2016, 1), end=c(2018, 1), frequency=1)
+ts_land
+```
+> In the above time series plots, we can see:
+
+  * The first plot (population) also includes some country outliers, but the population increases are not drastic.
+  * The second plot, percentage of protected land, indicates that most countries have held steady across the past couple of most recent years of data collection, with a      couple of outliers having a decline in protected land and then holding stagnant.
+  * Legends were not included with these plots, as too many countries existed in the population and land datasets (both datasets possessed many countries in common           with one another).
+  
+> The accompanying output from the time series equation is also present.
+
+## GDP and Forest Loss (2010-2019)
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+library(tidyr)
+library(dplyr)
+library(zoo)
+library(reshape2)
+library(lubridate)
+
+## Time series analyses over time for the same countries that are available in the population data set and each respective variable data set (in those cases in which it applies).
+
+## GDP + Forest Loss
+## Parse out relevant country GDP data from the combined dataset (so we obtain only the data for the countries in common with the forest loss variable) and make new dataset.
+## GDP
+ts_GDP_forestloss_df <- combine_GDP_forest_loss[,c("country", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")]
+## ts_GDP_forestloss_df
+
+## Take the parsed out variables and pivot the dates to prepare for time series analysis.
+pivot_GDP_fl <- ts_GDP_forestloss_df %>% pivot_longer(cols = c("2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"), names_to = "year", values_to = "count")
+## pivot_GDP_fl
+
+## Amend the date (year) so that it can be appropriately used in a time series analysis.
+pivot_GDP_fl$year <- as.Date(pivot_GDP_fl$year, format = "%Y")
+## pivot_GDP_fl
+
+## Plot values across time (time series)
+ggplot2::ggplot(pivot_GDP_fl,aes(x = year, y = count, color = country, group = country)) + geom_line() + ggtitle("GDP")
+
+## Time series equation
+ts_GDP_fl <- ts(pivot_GDP_fl, start=c(2010, 1), end=c(2019, 1), frequency=1)
+
+## Parse out forest loss data.
+## Forest Loss
+ts_forestloss_df2 <- combine_GDP_forest_loss[,c("country", "losses_2010", "losses_2011", "losses_2012", "losses_2013", "losses_2014", "losses_2015", "losses_2016", "losses_2017", "losses_2018", "losses_2019")]
+## ts_forestloss_df2
+
+## Rename and take the parsed out variables and pivot the dates to prepare for time series analysis.
+names(ts_forestloss_df2) = c("country", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019")
+## ts_forestloss_df2
+
+## Pivot
+pivot_fl2 <- ts_forestloss_df2 %>% pivot_longer(cols = c("2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019"), names_to = "year", values_to = "count")
+## pivot_fl2
+
+## Amend the date (year) so that it can be appropriately used in a time series analysis.
+pivot_fl2$year <- as.Date(pivot_fl2$year, format = "%Y")
+## pivot_fl2
+
+## Plot values across time (time series)
+ggplot2::ggplot(pivot_fl2,aes(x = year, y = count, color = country, group = country)) + geom_line() + ggtitle("Forest Loss")
+
+## Time series equation
+ts_fl2 <- ts(pivot_fl2, start=c(2010, 1), end=c(2019, 1), frequency=1)
+ts_fl2
+```
+> In the above time series plots, we can see:
+
+  * The first plot (GDP) shows most countries having a steady wave of GDP, with a couple of outliers (most notably, Austria).
+  * The second plot, forest loss, indicates that most countries have held steady from 2010-2019.
+  
+> The accompanying output from the time series equation is also present.
+
+## GDP and Forest Usage (2010-2019)
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+
+## Time series analyses over time for the same countries that are available in the GDP data set and each respective variable data set (in those cases in which it applies).
+
+## GDP + Forest Usage
+## Parse out relevant country population data from the combined dataset (so we obtain only the data for the countries in common with the forest loss variable) and make new dataset.
+## Population
+ts_GDP_forestuse_df <- combine_GDP_forest_use[,c("country", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")]
+## ts_GDP_forestuse_df
+
+## Take the parsed out variables and pivot the dates to prepare for time series analysis.
+pivot_GDP_fu <- ts_GDP_forestuse_df %>% pivot_longer(cols = c("2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"), names_to = "year", values_to = "count")
+## pivot_GDP_fu
+
+## Amend the date (year) so that it can be appropriately used in a time series analysis.
+pivot_GDP_fu$year <- as.Date(pivot_GDP_fu$year, format = "%Y")
+## pivot_GDP_fu
+
+## Plot values across time (time series)
+ggplot2::ggplot(pivot_GDP_fu,aes(x = year, y = count, color = country, group = country)) + geom_line() + ggtitle("GDP")
+
+## Time series equation
+ts_GDP_fu <- ts(pivot_GDP_fu, start=c(2010, 1), end=c(2019, 1), frequency=1)
+
+## Parse out forest usage data.
+## Forest Usage
+ts_forestuse_df2 <- combine_GDP_forest_use[,c("country", "usage_2010", "usage_2011", "usage_2012", "usage_2013", "usage_2014", "usage_2015", "usage_2016", "usage_2017", "usage_2018", "usage_2019")]
+## ts_forestuse_df2
+
+## Rename and take the parsed out variables and pivot the dates to prepare for time series analysis.
+names(ts_forestuse_df2) = c("country", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019")
+## ts_forestuse_df2
+
+## Pivot
+pivot_fu2 <- ts_forestuse_df2 %>% pivot_longer(cols = c("2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019"), names_to = "year", values_to = "count")
+## pivot_fu2
+
+## Amend the date (year) so that it can be appropriately used in a time series analysis.
+pivot_fu2$year <- as.Date(pivot_fu2$year, format = "%Y")
+## pivot_fu2
+
+## Plot values across time (time series)
+ggplot2::ggplot(pivot_fu2,aes(x = year, y = count, color = country, group = country)) + geom_line() + ggtitle("Forest Usage")
+
+## Time series equation
+ts_fu2 <- ts(pivot_fu2, start=c(2010, 1), end=c(2019, 1), frequency=1)
+ts_fu
+```
+
+> In the above time series plots, we can see:
+
+  * The first plot (GDP) shows most countries having a steady wave of GDP, with a couple of outliers (most notably, Austria again).
+  * The second plot, forest usage, indicates interesting waves of increases and decreases (peaks and valleys) from 2010-2019.
+  
+> The accompanying output from the time series equation is also present.
+
+## GDP and Material Consumption (2010-2019)
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+
+## Time series analyses over time for the same countries that are available in the GDP data set and each respective variable data set (in those cases in which it applies).
+
+## GDP + Material Consumption
+## Parse out relevant country population data from the combined dataset (so we obtain only the data for the countries in common with the material consumption variable) and make new dataset.
+## GDP
+ts_GDP_matconsume_df <- combine_GDP_materials_consume[,c("country", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")]
+## ts_GDP_matconsume_df
+
+## Take the parsed out variables and pivot the dates to prepare for time series analysis.
+pivot_GDP_mc <- ts_GDP_matconsume_df %>% pivot_longer(cols = c("2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"), names_to = "year", values_to = "count")
+## pivot_GDP_mc
+
+## Amend the date (year) so that it can be appropriately used in a time series analysis.
+pivot_GDP_mc$year <- as.Date(pivot_GDP_mc$year, format = "%Y")
+## pivot_GDP_mc
+
+## Plot values across time (time series)
+ggplot2::ggplot(pivot_GDP_mc,aes(x = year, y = count, color = country, group = country)) + geom_line() + ggtitle("GDP")
+
+## Time series equation
+ts_GDP_mc <- ts(pivot_GDP_mc, start=c(2010, 1), end=c(2019, 1), frequency=1)
+
+## Parse out materials consumption dataset.
+## Material Consumption
+ts_matconsume_df2 <- combine_GDP_materials_consume[,c("country", "consumption_2010", "consumption_2011", "consumption_2012", "consumption_2013", "consumption_2014", "consumption_2015", "consumption_2016", "consumption_2017", "consumption_2018", "consumption_2019")]
+## ts_matconsume_df2
+
+## Rename and take the parsed out variables and pivot the dates to prepare for time series analysis.
+names(ts_matconsume_df2) = c("country", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019")
+## ts_matconsume_df2
+
+## Pivot
+pivot_mc2 <- ts_matconsume_df2 %>% pivot_longer(cols = c("2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019"), names_to = "year", values_to = "count")
+## pivot_mc2
+
+## Amend the date (year) so that it can be appropriately used in a time series analysis.
+pivot_mc2$year <- as.Date(pivot_mc2$year, format = "%Y")
+## pivot_mc2
+
+## Plot values across time (time series)
+ggplot2::ggplot(pivot_mc2,aes(x = year, y = count, color = country, group = country)) + geom_line() + ggtitle("Material Consumption")
+
+## Time series equation
+ts_mc2 <- ts(pivot_mc2, start=c(2010, 1), end=c(2019, 1), frequency=1)
+ts_mc2
+```
+> In the above time series plots, we can see:
+
+  * The first plot (GDP) shows most countries having a steady wave of GDP, with a couple of outliers (most notably, Austria again).
+  * The second plot, material consumption, indicates interesting waves of increases and decreases (peaks and valleys) from 2010-2019.
+  
+> The accompanying output from the time series equation is also present.
+
+## GDP and Material Footprint (2010-2017)
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+
+## Time series analyses over time for the same countries that are available in the GDP data set and each respective variable data set (in those cases in which it applies).
+
+## GDP + Material Footprint
+## Parse out relevant country GDP data from the combined dataset (so we obtain only the data for the countries in common with the material footprint variable) and make new dataset.
+## GDP
+ts_GDP_matfootprint_df <- combine_GDP_materials_footprint[,c("country", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")]
+## ts_GDP_matfootprint_df
+
+## Take the parsed out variables and pivot the dates to prepare for time series analysis.
+pivot_GDP_mf <- ts_GDP_matfootprint_df %>% pivot_longer(cols = c("2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"), names_to = "year", values_to = "count")
+## pivot_GDP_mf
+
+## Amend the date (year) so that it can be appropriately used in a time series analysis.
+pivot_GDP_mf$year <- as.Date(pivot_GDP_mf$year, format = "%Y")
+## pivot_GDP_mf
+
+## Plot values across time (time series)
+ggplot2::ggplot(pivot_GDP_mf,aes(x = year, y = count, color = country, group = country)) + geom_line() + ggtitle("GDP")
+
+## Time series equation
+ts_GDP_mf <- ts(pivot_GDP_mf, start=c(2010, 1), end=c(2017, 1), frequency=1)
+
+## Parse out materials footprint dataset.
+## Material Footprint
+ts_matfoot_df2 <- combine_GDP_materials_footprint[,c("country", "footprint_2010", "footprint_2011", "footprint_2012", "footprint_2013", "footprint_2014", "footprint_2015", "footprint_2016", "footprint_2017")]
+## ts_matfoot_df2
+
+## Rename and take the parsed out variables and pivot the dates to prepare for time series analysis.
+names(ts_matfoot_df2) = c("country", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")
+## ts_matfoot_df2
+
+## Pivot
+pivot_mf2 <- ts_matfoot_df2 %>% pivot_longer(cols = c("2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017"), names_to = "year", values_to = "count")
+## pivot_mf2
+
+## Amend the date (year) so that it can be appropriately used in a time series analysis.
+pivot_mf2$year <- as.Date(pivot_mf2$year, format = "%Y")
+## pivot_mf2
+
+## Plot values across time (time series)
+ggplot2::ggplot(pivot_mf2,aes(x = year, y = count, color = country, group = country)) + geom_line() + ggtitle("Material Footprint")
+
+## Time series equation
+ts_mf2 <- ts(pivot_mf2, start=c(2010, 1), end=c(2017, 1), frequency=1)
+ts_mf2
+```
+> In the above time series plots, we can see:
+
+  * The first plot (GDP) shows most countries having a steady wave of GDP, with a couple of outliers (most notably, Austria).
+  * The second plot, material footprint, indicates that most countries have held steady from 2010-2017.
+  
+> The accompanying output from the time series equation is also present.
+
+## GDP and Petroleum/Other Liquids Consumed (2010-2020)
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+
+## Time series analyses over time for the same countries that are available in the GDP data set and each respective variable data set (in those cases in which it applies).
+
+## GDP + Petroleum
+## Parse out relevant country GDP data from the combined dataset (so we obtain only the data for the countries in common with the petroleum variable) and make new dataset.
+## GDP
+ts_GDP_petuse_df <- combine_GDP_petroleum[,c("country", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")]
+## ts_GDP_petuse_df
+
+## Take the parsed out variables and pivot the dates to prepare for time series analysis.
+pivot_GDP_pet <- ts_GDP_petuse_df %>% pivot_longer(cols = c("2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"), names_to = "year", values_to = "count")
+## pivot_GDP_pet
+
+## Amend the date (year) so that it can be appropriately used in a time series analysis.
+pivot_GDP_pet$year <- as.Date(pivot_GDP_pet$year, format = "%Y")
+## pivot_GDP_pet
+
+## Plot values across time (time series)
+ggplot2::ggplot(pivot_GDP_pet,aes(x = year, y = count, color = country, group = country)) + geom_line() + theme(legend.position = "none", legend.key.size = unit(0.01, "cm"), plot.margin=unit(c(1,1,1.5,1.2),"cm")) + ggtitle("GDP")
+
+## Time series equation
+ts_GDP_pet <- ts(pivot_GDP_pet, start=c(2010, 1), end=c(2020, 1), frequency=1)
+
+## Parse out petroleum dataset.
+## Petroleum
+ts_pet_df2 <- combine_GDP_petroleum[,c("country", "pet_use_2010", "pet_use_2011", "pet_use_2012", "pet_use_2013", "pet_use_2014", "pet_use_2015", "pet_use_2016", "pet_use_2017", "pet_use_2018", "pet_use_2019", "pet_use_2020")]
+## ts_pet_df2
+
+## Rename and take the parsed out variables and pivot the dates to prepare for time series analysis.
+names(ts_pet_df2) = c("country", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")
+## ts_pet_df2
+
+## Pivot
+pivot_pet2 <- ts_pet_df2 %>% pivot_longer(cols = c("2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"), names_to = "year", values_to = "count")
+## pivot_pet2
+
+## Amend the date (year) so that it can be appropriately used in a time series analysis.
+pivot_pet2$year <- as.Date(pivot_pet2$year, format = "%Y")
+## pivot_pet2
+
+## Plot values across time (time series)
+ggplot2::ggplot(pivot_pet2,aes(x = year, y = count, color = country, group = country)) + geom_line() + theme(legend.position = "none", legend.key.size = unit(0.01, "cm"), plot.margin=unit(c(1,1,1.5,1.2),"cm")) + ggtitle("Petroleum Consumption")
+
+## Time series equation
+ts_pet2 <- ts(pivot_pet2, start=c(2010, 1), end=c(2020, 1), frequency=1)
+ts_pet2
+```
+> In the above time series plots, we can see:
+
+  * The first plot (which is GDP), shows steady waves with a couple of country outliers.
+  * The second plot, petroleum consumption, also includes a couple of country outliers.
+  * Legends were not included with these plots, as too many countries existed in the GDP and petroleum datasets (both datasets possessed many countries in common             with one another).
+  
+> The accompanying output from the time series equation is also present.
+
+## Population and Protected Land (2016-2018)
+
+```{r echo = FALSE, warning = FALSE, comment = NA}
+setwd("/Users/Madeleine's PC/Documents/Madeleine/Documents/Bellevue University Courses/Masters in DS/BU DSC520/Final Project")
+
+## Time series analyses over time for the same countries that are available in the GDP data set and each respective variable data set (in those cases in which it applies).
+
+## GDP + Protected Land
+## Parse out relevant country GDP data from the combined dataset (so we obtain only the data for the countries in common with the protected land variable) and make new dataset.
+## GDP
+ts_GDP_land_df <- combine_GDP_land[,c("country", "2016", "2017", "2018", "2019", "2020")]
+## ts_GDP_land_df
+
+## Take the parsed out variables and pivot the dates to prepare for time series analysis.
+pivot_GDP_land <- ts_GDP_land_df %>% pivot_longer(cols = c("2016", "2017", "2018", "2019", "2020"), names_to = "year", values_to = "count")
+## pivot_GDP_land
+
+## Amend the date (year) so that it can be appropriately used in a time series analysis.
+pivot_GDP_land$year <- as.Date(pivot_GDP_land$year, format = "%Y")
+## pivot_GDP_land
+
+## Plot values across time (time series)
+ggplot2::ggplot(pivot_GDP_land,aes(x = year, y = count, color = country, group = country)) + geom_line() + theme(legend.position = "none", legend.key.size = unit(0.01, "cm"), plot.margin=unit(c(1,1,1.5,1.2),"cm")) + ggtitle("GDP")
+
+## Time series equation
+ts_GDP_land <- ts(pivot_GDP_land, start=c(2016, 1), end=c(2018, 1), frequency=1)
+
+## Parse out protected land dataset.
+## Protected Land
+ts_land_df2 <- combine_GDP_land[,c("country", "land_2016", "land_2017", "land_2018")]
+## ts_land_df2
+
+## Rename and take the parsed out variables and pivot the dates to prepare for time series analysis.
+names(ts_land_df2) = c("country", "2016", "2017", "2018")
+## ts_land_df2
+
+## Pivot
+pivot_land2 <- ts_land_df2 %>% pivot_longer(cols = c("2016", "2017", "2018"), names_to = "year", values_to = "count")
+## pivot_land2
+
+## Amend the date (year) so that it can be appropriately used in a time series analysis.
+pivot_land2$year <- as.Date(pivot_land2$year, format = "%Y")
+## pivot_land2
+
+## Plot values across time (time series)
+ggplot2::ggplot(pivot_land2,aes(x = year, y = count, color = country, group = country)) + geom_line() + theme(legend.position = "none", legend.key.size = unit(0.01, "cm"), plot.margin=unit(c(1,1,1.5,1.2),"cm")) + ggtitle("% of Protected Land")
+
+## Time series equation
+ts_land2 <- ts(pivot_land2, start=c(2016, 1), end=c(2018, 1), frequency=1)
+ts_land2
+```
+> In the above time series plots, we can see:
+
+  * The first plot (GDP) also includes some country outliers, but increases are not drastic (pretty steady).
+  * The second plot, percentage of protected land, indicates that most countries have held steady across the past couple of most recent years of data collection, with a      couple of outliers having a decline in protected land and then holding stagnant.
+  * Legends were not included with these plots, as too many countries existed in the population and land datasets (both datasets possessed many countries in common           with one another).
+  
+> The accompanying output from the time series equation is also present.
+
+### Implications
+
+> The overall implications of my report and analysis include the following:
+
+  * It is not totally conclusive the impacts that both population and GDP may have on the dependent variables in question here.
+  * However, it is important to note that the strongest effects were seen in the relationships between population and petroleum consumption as well as GDP and petroleum      consumption.
+  * The findings herein merely show a small snapshot of data for a small number of variables (perhaps variables that are not necessarily the best indicators), and            therefore should be considered as such. In any case, these findings (or lack thereof) may urge others to expand upon this research in an endeavor to validate or          refute it.
+  * No matter the case, it would behoove any of us to proceed with caution when presented with findings related to a problem such as the threat to our planet and the         environment.
+  * Overall, the implication of these analyses indicate it likely is not enough, and it would be paramount for others to conduct additional research and analyses.
+  
+### Limitations
+
+> This analysis was very rudimentary in the grand scheme of research and data science, and therefore was certainly not without its limitations which include but are not limited to:
+
+  *  Not enough data was available in some of my datasets to conduct a better longitudinal study or better time series analysis. With more data across more years, the        findings may have been different from what is present here in this analysis.
+  * The fact that not all of the yearly data matched or was the same across all variables is also a limitation, and additional sources of data regarding this variables       with more similar timeframes may be warranted.
+  * In addition to simple correlational analyses and time series plots, it would be important to expand upon these analyses and conduct correlational tests between the       different time series, as this may offer more robust correlational analyses than the simpler ones I have conducted.
+  * In order to answer one of my final research questions about the future of our planet, it is suggested and recommended to build a predictive model that can take           historical data on these topics (historically past 2010 as well) and forecast what the future of our planet may look like. This is critical for understanding the         future and how what we do now may impact that.
+  
+### Concluding Remarks
+
+> Overall, many of us are aware of the need to take care of and look out for our planet and its resources - especially because many of those resources are non-renewable and therefore have a shelf-life. Similarly, this analysis does not begin to touch on the alternative methods for generating or creating new resources, which is another realm to consider entirely - albeit it goes hand in hand with the management and utilization of our current non-renewable resources. While a few of the variables present in this analysis did hold moderately strong relationships with both GDP and population, by and large only a couple (petroleum) were significant strong relationships (and a couple were quite weak). Given this, more research and analyses are likely required to obtain a better picture and landscape of our earth's current state, thus granting more accurate insights for model building and forecasting. No matter the case, our planet's well-being is a hot-button topic that deserves to remain at the forefront of discussions and research - after all, it is our only home.
+
+### References
+1. IPCC. (2021). AR6 climate change 2021: The physical science basis. IPCC. 
+        https://www.ipcc.ch/report/ar6/wg1/#TS
+2. Please note: Also see the references listed and included in the "How to Import and Clean My Data" section. Additional resources will be included in the final cumulative project step as needed and as relevant.
